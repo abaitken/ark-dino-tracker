@@ -10,14 +10,16 @@ ko.bindingHandlers.position = {
   };
 
 function Compare(left, right) {
-	  if (left < right)
-		  return -1;
-  
-	  if (left > right)
-		  return 1;
-  
-	  return 0;
-  }
+	if (left < right)
+		return -1;
+
+	if (left > right)
+		return 1;
+
+	return 0;
+}
+
+const markerSize = 5;
 
 function ViewModel() {
 	var self = this;
@@ -35,14 +37,20 @@ function ViewModel() {
 			self.locations([]);
 	});
 	self.ConvertLatToX = function(lat) {
-		const top = 22;
-		const factor = 9.9;
-		return (top + (factor * lat)) * self.scale();
+		const maxHeight = 2048;
+		let currentHeight = $("#mapImage").height();
+		let scale = currentHeight / maxHeight;
+		let factor = 20;
+		const top = 30;
+		return (top + (factor * lat) - (markerSize / 2)) * scale;
 	};
-	self.ConvertLonToY = function(lat) {
-		const left = 20;
-		const factor = 9.9;
-		return (left + (factor * lat)) * self.scale();
+	self.ConvertLonToY = function(lon) {
+		const maxWidth = 2048;
+		let currentWidth = $("#mapImage").width();
+		let scale = currentWidth / maxWidth;
+		let factor = 20;
+		const left = 40;
+		return (left + (factor * lon) - (markerSize / 2)) * scale;
 	};
 	
 	self.Init = function () {
