@@ -15,17 +15,22 @@
 
   <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
     <a class="navbar-brand" href="#">ARK Dino Tracker</a>
+    <!-- ko if: dataReady -->
+    <div><select data-bind="options: creatureClasses, optionsText: 'Text', value: selectedCreatureClass, optionsCaption: 'Select creature class...'"></select></div>
+    <!-- /ko -->
   </nav>
 
   <main role="main" class="container">
-
-
     <!-- ko ifnot: dataReady -->
     <div data-bind="text: messages" class="alert alert-info" role="alert" id="messages">Fetching...</div>
     <!-- /ko -->
     <!-- ko if: dataReady -->
-    <div><select data-bind="options: creatureClasses, value: selectedCreatureClass, optionsCaption: 'Select creature class...'"></select></div>
-    <div class="map"><img src="img/the_island.jpeg" /></div>
+    <div class="map">
+      <img src="img/the_island.jpeg" class="mapImage" />
+      <!-- ko foreach: locations -->
+      <div class="location" data-bind="position: $data"></div>
+      <!-- /ko -->
+    </div>
     <!-- /ko -->
 
   </main>

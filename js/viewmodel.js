@@ -1,3 +1,24 @@
+ko.bindingHandlers.position = {
+	init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+		var value = valueAccessor();
+		//$(element).text('lat: ' + value.Lat + ', lon: ' + value.Lon);
+		let parent = bindingContext['$parent'];
+		$(element).css({top: parent.ConvertLatToX(value.Lat), left: parent.ConvertLonToY(value.Lon)});
+	},
+	update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+	}
+  };
+
+function Compare(left, right) {
+	  if (left < right)
+		  return -1;
+  
+	  if (left > right)
+		  return 1;
+  
+	  return 0;
+  }
+
 function ViewModel() {
 	var self = this;
 	self.dataReady = ko.observable(false);
@@ -7,6 +28,22 @@ function ViewModel() {
 	self.allLocations = ko.observableArray([]);
 	self.locations = ko.observableArray([]);
 	self.selectedCreatureClass = ko.observable();
+	self.selectedCreatureClass.subscribe(function(newValue) {
+		if(newValue)
+			self.locations(self.allLocations()[newValue.ClassName]);
+		else
+			self.locations([]);
+	});
+	self.ConvertLatToX = function(lat) {
+		const top = 22;
+		const factor = 9.9;
+		return (top + (factor * lat)) * self.scale();
+	};
+	self.ConvertLonToY = function(lat) {
+		const left = 20;
+		const factor = 9.9;
+		return (left + (factor * lat)) * self.scale();
+	};
 	
 	self.Init = function () {
 		ko.applyBindings(self);
@@ -16,7 +53,16 @@ function ViewModel() {
 			dataType: 'json',
 			mimeType: 'application/json',
 			success: function (data) {
-				self.creatureClasses(data['CreatureClasses']);
+				let creatureClasses = [];
+				for (let index = 0; index < data['CreatureClasses'].length; index++) {
+					const element = data['CreatureClasses'][index];
+					let item = new CreatureClass(element);
+					creatureClasses.push(item);
+				}
+				creatureClasses.sort(function (left, right) {
+					return Compare(left.Text, right.Text);
+				});
+				self.creatureClasses(creatureClasses);
 				self.allLocations(data['Locations']);
 				self.dataReady(true);
 			},
@@ -29,6 +75,23 @@ function ViewModel() {
 		});
 
 	};
+}
+
+function CreatureClass(className) {
+	let self = this;
+	self.ClassName = className;
+	let name = className;
+	name = name.replace('_Character_BP_C', '');
+	name = name.replace('_Character', '');
+	name = name.replace('_C', '');
+	name = name.replace('_BP', '');
+	name = name.replace('_Unicorn', ' (Unicorn)');
+	name = name.replace('_Ocean', ' (Ocean)');
+	name = name.replace('_Polar', ' (Polar)');
+	name = name.replace('_Polar', ' (Polar)');
+	name = name.replace('_Diseased', ' (Diseased)');
+	name = name.replace('_', ' ');
+	self.Text = name;
 }
 
 var vm = new ViewModel();
