@@ -3,11 +3,34 @@ ko.bindingHandlers.position = {
 		var value = valueAccessor();
 		//$(element).text('lat: ' + value.Lat + ', lon: ' + value.Lon);
 		let parent = bindingContext['$parent'];
-		$(element).css({top: parent.ConvertLatToX(value.Lat), left: parent.ConvertLonToY(value.Lon)});
+		$(element).css({
+                top: parent.ConvertLatToX(value.Lat), 
+                left: parent.ConvertLonToY(value.Lon),
+                'background-color': LevelToColor(value.Level)
+        });
 	},
 	update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
 	}
   };
+ 
+function LevelToColor(level) {
+    if(level < 25)
+        return 'white';
+    
+    if(level < 50)
+        return 'green';
+
+    if(level < 75)
+        return 'blue';
+    
+    if(level < 100)
+        return 'purple';
+    
+    if(level < 125)
+        return 'yellow';
+    
+    return 'red';
+}
 
 function Compare(left, right) {
 	if (left < right)

@@ -25,8 +25,32 @@ body {
   position: absolute;
   height: 5px;
   width: 5px;
-  background-color: #f00;
+  /* background-color: #f00; */
   /* background-image: radial-gradient(circle, red, rgb(255, 161, 161), red); */
   border-radius: 50%;
   display: inline-block;
+}
+
+.location-upto24 {
+  background-color: white;
+}
+
+.location-upto49 {
+  background-color: green;
+}
+
+.location-upto74 {
+  background-color: blue;
+}
+
+.location-upto99 {
+  background-color: purple;
+}
+
+.location-upto124 {
+  background-color: yellow;
+}
+
+.location-over125 {
+  background-color: red;
 }
