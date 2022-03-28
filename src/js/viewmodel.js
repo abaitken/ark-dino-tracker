@@ -76,20 +76,42 @@ function ViewModel() {
 		const left = 40;
 		return (left + (factor * lon) - (markerSize / 2)) * scale;
 	};
+
+	self.fetchData = function(url) {
+		return new Promise((resolve, reject) => {
+			$.ajax({
+				type: 'GET',
+				url: url,
+				dataType: 'json',
+				mimeType: 'application/json',
+				success: function (data) {
+					resolve(data);
+				},
+				error: function (error) {
+					reject(error);
+				}
+			});
+		});
+	}
 	
 	self.Init = function () {
 		ko.applyBindings(self);
-		$.ajax({
-			type: 'GET',
-			url: 'data.json',
-			dataType: 'json',
-			mimeType: 'application/json',
-			success: function (data) {
+
+		Promise.all([self.fetchData('data.json'), self.fetchData('class-mapping.json')])
+			.then((values) => {
+				let data = values[0];
 				self.lastUpdated(data['LastUpdated']);
+
+				let mappings = values[1];
 				let creatureClasses = [];
 				for (let index = 0; index < data['CreatureClasses'].length; index++) {
 					const element = data['CreatureClasses'][index];
-					let item = new CreatureClass(element);
+
+					let name = mappings[element];
+					if(name == null)
+						name = element;
+
+					let item = new CreatureClass(element, name);
 					creatureClasses.push(item);
 				}
 				creatureClasses.sort(function (left, right) {
@@ -98,32 +120,27 @@ function ViewModel() {
 				self.creatureClasses(creatureClasses);
 				self.allLocations(data['Locations']);
 				self.dataReady(true);
-			},
-			error: function (jqXHR, textStatus, errorThrown) {
-				self.messages(errorThrown);
+			})
+			.catch((errors) => {
+
+				let error = '';
+
+				for (let index = 0; index < errors.length; index++) {
+					const element = errors[index];
+					error += element;
+				}
+
+				self.messages(error);
 				$('#messages').attr("class", "alert alert-danger");
 				// TODO : Text not displaying correctly
-				$('#track-info').html("Error: " + errorThrown);
-			}
-		});
-
+				$('#track-info').html("Error: " + error);
+			});
 	};
 }
 
-function CreatureClass(className) {
+function CreatureClass(className, name) {
 	let self = this;
 	self.ClassName = className;
-	let name = className;
-	name = name.replace('_Character_BP_C', '');
-	name = name.replace('_Character', '');
-	name = name.replace('_C', '');
-	name = name.replace('_BP', '');
-	name = name.replace('_Unicorn', ' (Unicorn)');
-	name = name.replace('_Ocean', ' (Ocean)');
-	name = name.replace('_Polar', ' (Polar)');
-	name = name.replace('_Polar', ' (Polar)');
-	name = name.replace('_Diseased', ' (Diseased)');
-	name = name.replace('_', ' ');
 	self.Text = name;
 }
 
