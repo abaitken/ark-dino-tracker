@@ -19,6 +19,7 @@ body {
   display: block;
   width: 100%;
   height: auto;
+  opacity: 25%;
 }
 
 .location {
@@ -29,6 +30,25 @@ body {
   /* background-image: radial-gradient(circle, red, rgb(255, 161, 161), red); */
   border-radius: 50%;
   display: inline-block;
+  animation: blinkingBackground 1s infinite;
+  border: 1px solid black;
+}
+
+@keyframes blinkingBackground{
+  0%
+  { 
+    opacity: 25%;
+  }
+
+  50% 
+  { 
+    opacity: 100%;
+  }
+
+  100% 
+  { 
+    opacity: 25%;
+  }
 }
 
 .location-upto24 {
