@@ -52,6 +52,7 @@ function ViewModel() {
     self.creatureClasses = ko.observableArray([]);
 	self.allLocations = ko.observableArray([]);
 	self.locations = ko.observableArray([]);
+	self.lastUpdated = ko.observable('unknown');
 	self.selectedCreatureClass = ko.observable();
 	self.selectedCreatureClass.subscribe(function(newValue) {
 		if(newValue)
@@ -84,6 +85,7 @@ function ViewModel() {
 			dataType: 'json',
 			mimeType: 'application/json',
 			success: function (data) {
+				self.lastUpdated(data['LastUpdated']);
 				let creatureClasses = [];
 				for (let index = 0; index < data['CreatureClasses'].length; index++) {
 					const element = data['CreatureClasses'][index];

@@ -12,13 +12,16 @@
 </head>
 
 <body>
-
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand" href="#">ARK Dino Tracker</a>
-    <!-- ko if: dataReady -->
-    <div><select data-bind="options: creatureClasses, optionsText: 'Text', value: selectedCreatureClass, optionsCaption: 'Select creature class...'"></select></div>
-    <!-- /ko -->
-  </nav>
+  <header>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+      <a class="navbar-brand" href="#">ARK Dino Tracker</a>
+      <!-- ko if: dataReady -->
+      <div><select
+          data-bind="options: creatureClasses, optionsText: 'Text', value: selectedCreatureClass, optionsCaption: 'Select creature class...'"></select>
+      </div>
+      <!-- /ko -->
+    </nav>
+  </header>
 
   <main role="main" class="container">
     <!-- ko ifnot: dataReady -->
@@ -35,6 +38,16 @@
 
   </main>
 
+  <footer class="footer">
+    <div class="container">
+      <!-- ko if: dataReady -->
+      <span class="text-muted">
+        <div>Last updated: </div>
+        <div data-bind="text: lastUpdated"></div>
+      </span>
+      <!-- /ko -->
+    </div>
+  </footer>
 
   <script src="js/jquery-3.4.1.min.js" type="text/javascript"></script>
   <script src="js/jstree.min.js" type="text/javascript"></script>
