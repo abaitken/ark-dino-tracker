@@ -1,12 +1,22 @@
 ko.bindingHandlers.position = {
 	init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-		var value = valueAccessor();
+		let value = valueAccessor();
 		//$(element).text('lat: ' + value.Lat + ', lon: ' + value.Lon);
 		let parent = bindingContext['$parent'];
 		$(element).css({
                 top: parent.ConvertLatToX(value.Lat), 
-                left: parent.ConvertLonToY(value.Lon),
-                'background-color': LevelToColor(value.Level)
+                left: parent.ConvertLonToY(value.Lon)
+        });
+	},
+	update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+	}
+  };
+
+ko.bindingHandlers.levelIndicator = {
+	init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+		let value = valueAccessor();
+		$(element).css({
+                'background-color': LevelToColor(value)
         });
 	},
 	update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
@@ -45,20 +55,34 @@ function Compare(left, right) {
 const markerSize = 5;
 
 function ViewModel() {
-	var self = this;
+	let self = this;
 	self.dataReady = ko.observable(false);
 	self.messages = ko.observable('Fetching...');
     self.scale = ko.observable(1.0);
     self.creatureClasses = ko.observableArray([]);
 	self.allLocations = ko.observableArray([]);
 	self.locations = ko.observableArray([]);
+	self.creatureNumber = ko.computed(function(){
+		return self.locations().length;
+	});
 	self.lastUpdated = ko.observable('unknown');
 	self.selectedCreatureClass = ko.observable();
 	self.selectedCreatureClass.subscribe(function(newValue) {
 		if(newValue)
-			self.locations(self.allLocations()[newValue.ClassName]);
+		{
+			let values = self.allLocations()[newValue.ClassName];
+			self.locations(values);
+		}
 		else
 			self.locations([]);
+	});
+	self.topLocations = ko.computed(function(){
+		let values = self.locations();
+		values.sort(function (left, right) {
+			return Compare(left.Level, right.Level) * -1;
+		});
+		let result = values.slice(0, 30);
+		return result;
 	});
 	self.ConvertLatToX = function(lat) {
 		const maxHeight = 2048;
