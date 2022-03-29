@@ -72,6 +72,12 @@ function ViewModel() {
 	});
 	self.lastUpdated = ko.observable('unknown');
 	self.selectedCreatureClass = ko.observable();
+	self.selectedCreatureClassName = ko.computed(function(){
+		let value = self.selectedCreatureClass();
+		if(value == null)
+			return 'No selection';
+		return value.Text;
+	})
 	self.selectedCreatureClass.subscribe(function(newValue) {
 		if(newValue)
 		{

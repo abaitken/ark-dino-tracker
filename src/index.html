@@ -35,7 +35,7 @@
       <!-- /ko -->
       <!-- ko if: dataReady -->
       <div class="row no-gutters">
-        <div class="col col-xl-7">
+        <div class="col col-xl-8">
           <div class="map">
             <img src="img/the_island.jpeg" class="mapImage" id="mapImage" />
             <!-- ko foreach: locations -->
@@ -43,12 +43,12 @@
             <!-- /ko -->
           </div>
         </div>
-        <div class="col col-xl-2">
+        <div class="col col-xl-3">
           <span class="text-muted">
             <div>Last updated: <span data-bind="text: lastUpdated"></span></div>
           </span>
-          <div>(<span data-bind="text: creatureNumber"></span> found)</div>
-          <div>Top 25:</div>
+          <div><h3><span data-bind="text: selectedCreatureClassName"></span> (x<span data-bind="text: creatureNumber"></span>)</h3></div>
+          <h4>Top 25:</h4>
           <table class="table table-sm">
             <thead>
               <tr>
