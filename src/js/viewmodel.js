@@ -22,24 +22,28 @@ ko.bindingHandlers.levelIndicator = {
 	update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
 	}
   };
- 
-function LevelToColor(level) {
-    if(level < 25)
-        return 'white';
-    
-    if(level < 50)
-        return 'green';
 
-    if(level < 75)
-        return 'blue';
-    
-    if(level < 100)
-        return 'purple';
-    
-    if(level < 125)
-        return 'yellow';
-    
-    return 'red';
+var levelColors = [
+	{ min: 0, max: 24, color: 'white' },
+	{ min: 25, max: 49, color: 'green' },
+	{ min: 50, max: 74, color: 'blue' },
+	{ min: 75, max: 99, color: 'purple' },
+	{ min: 100, max: 124, color: 'yellow' },
+	{ min: 125, max: 450, color: 'red' },
+];
+
+function LevelToColor(level) {
+	let result = levelColors[0].color;
+	for (let index = 1; index < levelColors.length; index++) {
+		const element = levelColors[index];
+		if(level >= element.min)
+		{
+			result = element.color;
+			continue;
+		}
+		break;		
+	}
+	return result;
 }
 
 function Compare(left, right) {
@@ -62,6 +66,7 @@ function ViewModel() {
     self.creatureClasses = ko.observableArray([]);
 	self.allLocations = ko.observableArray([]);
 	self.locations = ko.observableArray([]);
+	self.colorLegend = levelColors;
 	self.creatureNumber = ko.computed(function(){
 		return self.locations().length;
 	});
@@ -81,7 +86,7 @@ function ViewModel() {
 		values.sort(function (left, right) {
 			return Compare(left.Level, right.Level) * -1;
 		});
-		let result = values.slice(0, 30);
+		let result = values.slice(0, 25);
 		return result;
 	});
 	self.ConvertLatToX = function(lat) {
