@@ -113,5 +113,7 @@
     "Equus_Character_BP_Unicorn_C": "Unicorn",
     "BionicRex_Character_BP_C": "Tek Rex",
     "Allo_Character_BP_C": "Allosaurus",
-    "MegaCarno_Character_BP_C": "Alpha Carnotaurus"
+    "MegaCarno_Character_BP_C": "Alpha Carnotaurus",
+    "MegaRex_Character_BP_C": "Alpha Rex",
+    "Spino_Character_BP_C": "Spino"
 }
