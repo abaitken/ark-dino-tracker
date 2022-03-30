@@ -21,6 +21,9 @@
           data-bind="options: datasets, optionsText: 'Text', value: selectedDataset"></select>
         <select
           data-bind="options: creatureClasses, optionsText: 'Text', value: selectedCreatureClass, optionsCaption: 'Select creature class...'"></select>
+        <span class="navbar-text">
+          Show tooltips: <input type="checkbox" data-bind="checked: showTooltips" />
+        </span>
       </div>
       <!-- /ko -->
     </nav>
@@ -39,10 +42,11 @@
       <div class="row no-gutters">
         <div class="col col-xl-8">
           <div class="map">
-            <img src="img/the_island.jpeg" class="mapImage" id="mapImage" />
+            <img src="img/the_island.jpeg" class="mapImage" id="mapImage" data-bind="coordtooltip: true"/>
             <!-- ko foreach: locations -->
             <div class="location" data-bind="position: $data, levelIndicator: Level"></div>
             <!-- /ko -->
+            <span class="coordinateTooltip"></span>
           </div>
         </div>
         <div class="col col-xl-3">

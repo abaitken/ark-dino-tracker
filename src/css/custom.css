@@ -58,26 +58,13 @@ body {
   }
 }
 
-.location-upto24 {
-  background-color: white;
-}
-
-.location-upto49 {
-  background-color: green;
-}
-
-.location-upto74 {
-  background-color: blue;
-}
-
-.location-upto99 {
-  background-color: purple;
-}
-
-.location-upto124 {
-  background-color: yellow;
-}
-
-.location-over125 {
-  background-color: red;
+.coordinateTooltip {
+  position: absolute;
+  white-space: nowrap;
+  display: none;
+  background: #ffffcc;
+  border: 1px solid black;
+  color: black;
+  padding: 5px;
+  z-index: 1000;
 }

@@ -1,27 +1,69 @@
 ko.bindingHandlers.position = {
 	init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
 		let value = valueAccessor();
-		//$(element).text('lat: ' + value.Lat + ', lon: ' + value.Lon);
+		
 		let parent = bindingContext['$parent'];
+		let rect = $('#mapImage').position();
+		let topOffset = rect.top;
+		let leftOffset = rect.left;
 		$(element).css({
-                top: parent.ConvertLatToX(value.Lat), 
-                left: parent.ConvertLonToY(value.Lon)
-        });
+			top: parent.ConvertLatToX(value.Lat) + topOffset,
+			left: parent.ConvertLonToY(value.Lon) + leftOffset
+		});
+		// $(element).tooltip({
+		// 	content: 'Lat: ' + value.Lat + ', Lon: ' + value.Lon
+		// })
 	},
 	update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
 	}
-  };
+};
 
 ko.bindingHandlers.levelIndicator = {
 	init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
 		let value = valueAccessor();
 		$(element).css({
-                'background-color': LevelToColor(value)
-        });
+			'background-color': LevelToColor(value)
+		});
 	},
 	update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
 	}
-  };
+};
+
+var UpdateTooltipPosition = function (element) {
+
+	let rect = element.getBoundingClientRect()
+	let topOffset = rect.top;
+	let leftOffset = rect.left;
+	let mouseOffsetTop = 10;
+	let mouseOffsetLeft = 10;
+	return function(event) {
+		let left = event.pageX - leftOffset;
+		let top = event.pageY - topOffset;
+		$(".coordinateTooltip").css({
+			"left": left + mouseOffsetLeft,
+			"top": top + mouseOffsetTop
+		});
+		$(".coordinateTooltip").text('Lat: ' + Math.round(vm.ConvertYToLat(top)) + ', Lon: ' + Math.round(vm.ConvertXToLon(left)));
+	};
+};
+ko.bindingHandlers.coordtooltip = {
+	init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+		$(element).on("mousemove", UpdateTooltipPosition(element));
+		$(element).on("mouseenter", function(event) {
+			if(viewModel.showTooltips())
+				$(".coordinateTooltip").css({display: 'block'});
+		});
+		$(element).on("mouseleave", function(event){			
+			$(".coordinateTooltip").css({display: 'none'});
+		});
+
+
+		ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
+			$(".coordinateTooltip").css({display: 'none'});
+			$(element).off("mousemove", UpdateTooltipPosition(element));
+		});
+	}
+};
 
 var levelColors = [
 	{ min: 0, max: 24, color: 'white' },
@@ -36,12 +78,11 @@ function LevelToColor(level) {
 	let result = levelColors[0].color;
 	for (let index = 1; index < levelColors.length; index++) {
 		const element = levelColors[index];
-		if(level >= element.min)
-		{
+		if (level >= element.min) {
 			result = element.color;
 			continue;
 		}
-		break;		
+		break;
 	}
 	return result;
 }
@@ -62,32 +103,32 @@ function ViewModel() {
 	let self = this;
 	self.dataReady = ko.observable(false);
 	self.messages = ko.observable('Fetching...');
-    self.scale = ko.observable(1.0);
-    self.creatureClasses = ko.observableArray([]);
+	self.showTooltips = ko.observable(false);
+	self.scale = ko.observable(1.0);
+	self.creatureClasses = ko.observableArray([]);
 	self.allLocations = ko.observableArray([]);
 	self.locations = ko.observableArray([]);
 	self.colorLegend = levelColors;
-	self.creatureNumber = ko.computed(function(){
+	self.creatureNumber = ko.computed(function () {
 		return self.locations().length;
 	});
 	self.lastUpdated = ko.observable('unknown');
 	self.selectedCreatureClass = ko.observable();
-	self.selectedCreatureClassName = ko.computed(function(){
+	self.selectedCreatureClassName = ko.computed(function () {
 		let value = self.selectedCreatureClass();
-		if(value == null)
+		if (value == null)
 			return 'No selection';
 		return value.Text;
 	})
-	self.selectedCreatureClass.subscribe(function(newValue) {
-		if(newValue)
-		{
+	self.selectedCreatureClass.subscribe(function (newValue) {
+		if (newValue) {
 			let values = self.allLocations()[newValue.ClassName];
 			self.locations(values);
 		}
 		else
 			self.locations([]);
 	});
-	self.topLocations = ko.computed(function(){
+	self.topLocations = ko.computed(function () {
 		let values = self.locations();
 		values.sort(function (left, right) {
 			return Compare(left.Level, right.Level) * -1;
@@ -95,29 +136,45 @@ function ViewModel() {
 		let result = values.slice(0, 25);
 		return result;
 	});
-	self.ConvertLatToX = function(lat) {
-		const maxHeight = 2048;
+	self.ConvertLatToX = function (lat) {
+		const originalHeight = 2048;
 		let currentHeight = $("#mapImage").height();
-		let scale = currentHeight / maxHeight;
+		let scale = currentHeight / originalHeight;
 		let factor = 20;
-		const top = 30;
-		return (top + (factor * lat) - (markerSize / 2)) * scale;
+		let imageTopOffset = 30;
+		return (imageTopOffset + (factor * lat) - (markerSize / 2)) * scale;
 	};
-	self.ConvertLonToY = function(lon) {
-		const maxWidth = 2048;
+	self.ConvertXToLon = function(x) {
+		const originalHeight = 2048;
+		let currentHeight = $("#mapImage").height();
+		let scale = currentHeight / originalHeight;
+		let factor = 20;
+		let imageTopOffset = 30;
+		return ((x / scale) - imageTopOffset) / factor;
+	};
+	self.ConvertLonToY = function (lon) {
+		const originalWidth = 2048;
 		let currentWidth = $("#mapImage").width();
-		let scale = currentWidth / maxWidth;
+		let scale = currentWidth / originalWidth;
 		let factor = 20;
-		const left = 40;
-		return (left + (factor * lon) - (markerSize / 2)) * scale;
+		let imageLeftOffset = 20;
+		return (imageLeftOffset + (factor * lon) - (markerSize / 2)) * scale;
 	};
-	self.datasets = [ { url: 'wild.json', Text: 'Wild' }, { url: 'tamed.json', Text: 'Tamed' } ];
+	self.ConvertYToLat = function(y) {
+		const originalWidth = 2048;
+		let currentWidth = $("#mapImage").width();
+		let scale = currentWidth / originalWidth;
+		let factor = 20;
+		let imageLeftOffset = 20;
+		return ((y / scale) - imageLeftOffset) / factor;
+	};
+	self.datasets = [{ url: 'wild.json', Text: 'Wild' }, { url: 'tamed.json', Text: 'Tamed' }];
 	self.selectedDataset = ko.observable(self.datasets[0]);
-	self.selectedDataset.subscribe(function(newValue) {
+	self.selectedDataset.subscribe(function (newValue) {
 		self.LoadDataset(newValue.url);
 	});
 
-	self.fetchData = function(url) {
+	self.fetchData = function (url) {
 		return new Promise((resolve, reject) => {
 			$.ajax({
 				type: 'GET',
@@ -134,7 +191,7 @@ function ViewModel() {
 		});
 	}
 
-	self.LoadDataset = function(url) {
+	self.LoadDataset = function (url) {
 		self.fetchData('wild.json')
 			.then((data) => {
 
@@ -144,16 +201,16 @@ function ViewModel() {
 					.then((values) => {
 						let data = values[0];
 						self.lastUpdated(data['LastUpdated']);
-		
+
 						let mappings = values[1];
 						let creatureClasses = [];
 						for (let index = 0; index < data['CreatureClasses'].length; index++) {
 							const element = data['CreatureClasses'][index];
-		
+
 							let name = mappings[element];
-							if(name == null)
+							if (name == null)
 								name = element;
-		
+
 							let item = new CreatureClass(element, name);
 							creatureClasses.push(item);
 						}
@@ -165,14 +222,14 @@ function ViewModel() {
 						self.dataReady(true);
 					})
 					.catch((errors) => {
-		
+
 						let error = '';
-		
+
 						for (let index = 0; index < errors.length; index++) {
 							const element = errors[index];
 							error += element;
 						}
-		
+
 						self.messages(error);
 						$('#messages').attr("class", "alert alert-danger");
 						// TODO : Text not displaying correctly
@@ -181,7 +238,7 @@ function ViewModel() {
 
 			});
 	};
-	
+
 	self.Init = function () {
 		ko.applyBindings(self);
 		self.LoadDataset(self.datasets[0].url);
