@@ -111,6 +111,11 @@ function ViewModel() {
 		const left = 40;
 		return (left + (factor * lon) - (markerSize / 2)) * scale;
 	};
+	self.datasets = [ { url: 'wild.json', Text: 'Wild' }, { url: 'tamed.json', Text: 'Tamed' } ];
+	self.selectedDataset = ko.observable(self.datasets[0]);
+	self.selectedDataset.subscribe(function(newValue) {
+		self.LoadDataset(newValue.url);
+	});
 
 	self.fetchData = function(url) {
 		return new Promise((resolve, reject) => {
@@ -128,48 +133,58 @@ function ViewModel() {
 			});
 		});
 	}
+
+	self.LoadDataset = function(url) {
+		self.fetchData('wild.json')
+			.then((data) => {
+
+				self.selectedCreatureClass(null);
+				self.dataReady(false);
+				Promise.all([self.fetchData(url), self.fetchData('class-mapping.json')])
+					.then((values) => {
+						let data = values[0];
+						self.lastUpdated(data['LastUpdated']);
+		
+						let mappings = values[1];
+						let creatureClasses = [];
+						for (let index = 0; index < data['CreatureClasses'].length; index++) {
+							const element = data['CreatureClasses'][index];
+		
+							let name = mappings[element];
+							if(name == null)
+								name = element;
+		
+							let item = new CreatureClass(element, name);
+							creatureClasses.push(item);
+						}
+						creatureClasses.sort(function (left, right) {
+							return Compare(left.Text, right.Text);
+						});
+						self.creatureClasses(creatureClasses);
+						self.allLocations(data['Locations']);
+						self.dataReady(true);
+					})
+					.catch((errors) => {
+		
+						let error = '';
+		
+						for (let index = 0; index < errors.length; index++) {
+							const element = errors[index];
+							error += element;
+						}
+		
+						self.messages(error);
+						$('#messages').attr("class", "alert alert-danger");
+						// TODO : Text not displaying correctly
+						$('#track-info').html("Error: " + error);
+					});
+
+			});
+	};
 	
 	self.Init = function () {
 		ko.applyBindings(self);
-
-		Promise.all([self.fetchData('data.json'), self.fetchData('class-mapping.json')])
-			.then((values) => {
-				let data = values[0];
-				self.lastUpdated(data['LastUpdated']);
-
-				let mappings = values[1];
-				let creatureClasses = [];
-				for (let index = 0; index < data['CreatureClasses'].length; index++) {
-					const element = data['CreatureClasses'][index];
-
-					let name = mappings[element];
-					if(name == null)
-						name = element;
-
-					let item = new CreatureClass(element, name);
-					creatureClasses.push(item);
-				}
-				creatureClasses.sort(function (left, right) {
-					return Compare(left.Text, right.Text);
-				});
-				self.creatureClasses(creatureClasses);
-				self.allLocations(data['Locations']);
-				self.dataReady(true);
-			})
-			.catch((errors) => {
-
-				let error = '';
-
-				for (let index = 0; index < errors.length; index++) {
-					const element = errors[index];
-					error += element;
-				}
-
-				self.messages(error);
-				$('#messages').attr("class", "alert alert-danger");
-				// TODO : Text not displaying correctly
-				$('#track-info').html("Error: " + error);
-			});
+		self.LoadDataset(self.datasets[0].url);
 	};
 }
 

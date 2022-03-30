@@ -18,6 +18,8 @@
       <!-- ko if: dataReady -->
       <div>
         <select
+          data-bind="options: datasets, optionsText: 'Text', value: selectedDataset"></select>
+        <select
           data-bind="options: creatureClasses, optionsText: 'Text', value: selectedCreatureClass, optionsCaption: 'Select creature class...'"></select>
       </div>
       <!-- /ko -->
