@@ -1,7 +1,9 @@
 ko.bindingHandlers.position = {
 	init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-		let value = valueAccessor();
-		
+	},
+	update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+		let value = ko.unwrap(valueAccessor());
+		ko.unwrap(vm.resizedNotifier());
 		let parent = bindingContext['$parent'];
 		let rect = $('#mapImage').position();
 		let topOffset = rect.top;
@@ -13,14 +15,12 @@ ko.bindingHandlers.position = {
 		// $(element).tooltip({
 		// 	content: 'Lat: ' + value.Lat + ', Lon: ' + value.Lon
 		// })
-	},
-	update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
 	}
 };
 
 ko.bindingHandlers.levelIndicator = {
 	init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-		let value = valueAccessor();
+		let value = ko.unwrap(valueAccessor());
 		$(element).css({
 			'background-color': LevelToColor(value)
 		});
@@ -239,9 +239,13 @@ function ViewModel() {
 			});
 	};
 
+	self.resizedNotifier = ko.observable();
 	self.Init = function () {
 		ko.applyBindings(self);
 		self.LoadDataset(self.datasets[0].url);
+		window.addEventListener('resize', function(){
+			self.resizedNotifier.valueHasMutated();
+		});
 	};
 }
 
