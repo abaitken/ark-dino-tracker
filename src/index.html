@@ -23,6 +23,9 @@
           data-bind="options: creatureClasses, optionsText: 'Text', value: selectedCreatureClass, optionsCaption: 'Select creature class...'"></select>
         <span class="navbar-text">
           Show tooltips: <input type="checkbox" data-bind="checked: showTooltips" />
+          <button class="btn btn-dark" onclick="vm.RefreshData()">
+               <img src="img/refresh.png" /> Refresh
+          </button>
         </span>
       </div>
       <!-- /ko -->

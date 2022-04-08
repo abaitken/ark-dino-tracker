@@ -190,53 +190,87 @@ function ViewModel() {
 			});
 		});
 	}
+    
+    self.RefreshData = function() {
+        self.fetchData(self.selectedDataset().url)
+            .then((data) => {
+                self.lastUpdated(data['LastUpdated']);
 
-	self.LoadDataset = function (url) {
-		self.fetchData('wild.json')
-			.then((data) => {
+                let mappings = values[1];
+                let creatureClasses = [];
+                for (let index = 0; index < data['CreatureClasses'].length; index++) {
+                    const element = data['CreatureClasses'][index];
 
-				self.selectedCreatureClass(null);
-				self.dataReady(false);
-				Promise.all([self.fetchData(url), self.fetchData('class-mapping.json')])
-					.then((values) => {
-						let data = values[0];
-						self.lastUpdated(data['LastUpdated']);
+                    let name = mappings[element];
+                    if (name == null)
+                        name = element;
 
-						let mappings = values[1];
-						let creatureClasses = [];
-						for (let index = 0; index < data['CreatureClasses'].length; index++) {
-							const element = data['CreatureClasses'][index];
+                    let item = new CreatureClass(element, name);
+                    creatureClasses.push(item);
+                }
+                creatureClasses.sort(function (left, right) {
+                    return Compare(left.Text, right.Text);
+                });
+                self.creatureClasses(creatureClasses);
+                self.allLocations(data['Locations']);
+                self.selectedCreatureClass().valueHasMutated();
+            })
+            .catch((errors) => {
 
-							let name = mappings[element];
-							if (name == null)
-								name = element;
+                let error = '';
 
-							let item = new CreatureClass(element, name);
-							creatureClasses.push(item);
-						}
-						creatureClasses.sort(function (left, right) {
-							return Compare(left.Text, right.Text);
-						});
-						self.creatureClasses(creatureClasses);
-						self.allLocations(data['Locations']);
-						self.dataReady(true);
-					})
-					.catch((errors) => {
+                for (let index = 0; index < errors.length; index++) {
+                    const element = errors[index];
+                    error += element;
+                }
 
-						let error = '';
+                self.messages(error);
+                $('#messages').attr("class", "alert alert-danger");
+                // TODO : Text not displaying correctly
+                $('#track-info').html("Error: " + error);
+            });;
+    };
+	self.LoadDataset = function (url) {		
+        self.selectedCreatureClass(null);
+        self.dataReady(false);
+        Promise.all([self.fetchData(url), self.fetchData('class-mapping.json')])
+            .then((values) => {
+                let data = values[0];
+                self.lastUpdated(data['LastUpdated']);
 
-						for (let index = 0; index < errors.length; index++) {
-							const element = errors[index];
-							error += element;
-						}
+                let mappings = values[1];
+                let creatureClasses = [];
+                for (let index = 0; index < data['CreatureClasses'].length; index++) {
+                    const element = data['CreatureClasses'][index];
 
-						self.messages(error);
-						$('#messages').attr("class", "alert alert-danger");
-						// TODO : Text not displaying correctly
-						$('#track-info').html("Error: " + error);
-					});
+                    let name = mappings[element];
+                    if (name == null)
+                        name = element;
 
-			});
+                    let item = new CreatureClass(element, name);
+                    creatureClasses.push(item);
+                }
+                creatureClasses.sort(function (left, right) {
+                    return Compare(left.Text, right.Text);
+                });
+                self.creatureClasses(creatureClasses);
+                self.allLocations(data['Locations']);
+                self.dataReady(true);
+            })
+            .catch((errors) => {
+
+                let error = '';
+
+                for (let index = 0; index < errors.length; index++) {
+                    const element = errors[index];
+                    error += element;
+                }
+
+                self.messages(error);
+                $('#messages').attr("class", "alert alert-danger");
+                // TODO : Text not displaying correctly
+                $('#track-info').html("Error: " + error);
+            });
 	};
 
 	self.resizedNotifier = ko.observable();
