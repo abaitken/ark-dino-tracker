@@ -103,12 +103,22 @@ let availableMaps = [
 		Id: "scorched",
 		Text: "Scorched Earth",
 		Image: "img/scorched_earth.jpg",
+		ImageOriginalWidth: 2048,
+		ImageOriginalHeight: 2048,
+		ScaleFactor: 20,
+		ImageOffsetLeft: 20,
+		ImageOffsetTop: 30,
 		Datasets: [{ url: 'se-wild.json', Text: 'Wild' }, { url: 'se-tamed.json', Text: 'Tamed' }]
 	},
 	{
 		Id: "island",
 		Text: "The Island",
 		Image: "img/the_island.jpeg",
+		ImageOriginalWidth: 2048,
+		ImageOriginalHeight: 2048,
+		ScaleFactor: 20,
+		ImageOffsetLeft: 20,
+		ImageOffsetTop: 30,
 		Datasets: [{ url: 'wild.json', Text: 'Wild' }, { url: 'tamed.json', Text: 'Tamed' }]
 	}
 ];
@@ -160,35 +170,39 @@ function ViewModel() {
 		return result;
 	});
 	self.ConvertLatToX = function (lat) {
-		const originalHeight = 2048;
+		let map = self.selectedMap();
+		let originalHeight = map.ImageOriginalHeight;
 		let currentHeight = $("#mapImage").height();
 		let scale = currentHeight / originalHeight;
-		let factor = 20;
-		let imageTopOffset = 30;
+		let factor = map.ScaleFactor;
+		let imageTopOffset = map.ImageOffsetTop;
 		return (imageTopOffset + (factor * lat) - (markerSize / 2)) * scale;
 	};
 	self.ConvertXToLon = function(x) {
-		const originalHeight = 2048;
+		let map = self.selectedMap();
+		let originalHeight = map.ImageOriginalHeight;
 		let currentHeight = $("#mapImage").height();
 		let scale = currentHeight / originalHeight;
-		let factor = 20;
-		let imageTopOffset = 30;
+		let factor = map.ScaleFactor;
+		let imageTopOffset = map.ImageOffsetTop;
 		return ((x / scale) - imageTopOffset) / factor;
 	};
 	self.ConvertLonToY = function (lon) {
-		const originalWidth = 2048;
+		let map = self.selectedMap();
+		let originalWidth = map.ImageOriginalWidth;
 		let currentWidth = $("#mapImage").width();
 		let scale = currentWidth / originalWidth;
-		let factor = 20;
-		let imageLeftOffset = 20;
+		let factor = map.ScaleFactor;
+		let imageLeftOffset = map.ImageOffsetLeft;
 		return (imageLeftOffset + (factor * lon) - (markerSize / 2)) * scale;
 	};
 	self.ConvertYToLat = function(y) {
-		const originalWidth = 2048;
+		let map = self.selectedMap();
+		let originalWidth = map.ImageOriginalWidth;
 		let currentWidth = $("#mapImage").width();
 		let scale = currentWidth / originalWidth;
-		let factor = 20;
-		let imageLeftOffset = 20;
+		let factor = map.ScaleFactor;
+		let imageLeftOffset = map.ImageOffsetLeft;
 		return ((y / scale) - imageLeftOffset) / factor;
 	};
 
