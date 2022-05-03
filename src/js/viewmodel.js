@@ -100,16 +100,16 @@ function Compare(left, right) {
 const markerSize = 5;
 let availableMaps = [
 	{
-		Id: "island",
-		Text: "The Island",
-		Image: "img/the_island.jpeg",
-		Datasets: [{ url: 'wild.json', Text: 'Wild' }, { url: 'tamed.json', Text: 'Tamed' }]
-	},
-	{
 		Id: "scorched",
 		Text: "Scorched Earth",
 		Image: "img/scorched_earth.jpg",
 		Datasets: [{ url: 'se-wild.json', Text: 'Wild' }, { url: 'se-tamed.json', Text: 'Tamed' }]
+	},
+	{
+		Id: "island",
+		Text: "The Island",
+		Image: "img/the_island.jpeg",
+		Datasets: [{ url: 'wild.json', Text: 'Wild' }, { url: 'tamed.json', Text: 'Tamed' }]
 	}
 ];
 
