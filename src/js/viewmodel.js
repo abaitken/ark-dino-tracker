@@ -98,6 +98,20 @@ function Compare(left, right) {
 }
 
 const markerSize = 5;
+let availableMaps = [
+	{
+		Id: "island",
+		Text: "The Island",
+		Image: "img/the_island.jpeg",
+		Datasets: [{ url: 'wild.json', Text: 'Wild' }, { url: 'tamed.json', Text: 'Tamed' }]
+	},
+	{
+		Id: "scorched",
+		Text: "Scorched Earth",
+		Image: "img/scorched_earth.jpg",
+		Datasets: [{ url: 'se-wild.json', Text: 'Wild' }, { url: 'se-tamed.json', Text: 'Tamed' }]
+	}
+];
 
 function ViewModel() {
 	let self = this;
@@ -109,12 +123,21 @@ function ViewModel() {
 	self.allLocations = ko.observableArray([]);
 	self.locations = ko.observableArray([]);
 	self.colorLegend = levelColors;
-	self.creatureNumber = ko.computed(function () {
+	self.maps = availableMaps;
+	self.selectedMap = ko.observable(self.maps[0]);
+	self.datasets = ko.pureComputed(function () { 
+		return self.selectedMap().Datasets; 
+	});
+	self.selectedDataset = ko.observable(self.datasets()[0]);
+	self.selectedDataset.subscribe(function (newValue) {
+		self.LoadDataset(newValue.url);
+	});
+	self.creatureNumber = ko.pureComputed(function () {
 		return self.locations().length;
 	});
 	self.lastUpdated = ko.observable('unknown');
 	self.selectedCreatureClass = ko.observable();
-	self.selectedCreatureClassName = ko.computed(function () {
+	self.selectedCreatureClassName = ko.pureComputed(function () {
 		let value = self.selectedCreatureClass();
 		if (value == null)
 			return 'No selection';
@@ -128,7 +151,7 @@ function ViewModel() {
 		else
 			self.locations([]);
 	});
-	self.topLocations = ko.computed(function () {
+	self.topLocations = ko.pureComputed(function () {
 		let values = self.locations();
 		values.sort(function (left, right) {
 			return Compare(left.Level, right.Level) * -1;
@@ -168,11 +191,6 @@ function ViewModel() {
 		let imageLeftOffset = 20;
 		return ((y / scale) - imageLeftOffset) / factor;
 	};
-	self.datasets = [{ url: 'wild.json', Text: 'Wild' }, { url: 'tamed.json', Text: 'Tamed' }];
-	self.selectedDataset = ko.observable(self.datasets[0]);
-	self.selectedDataset.subscribe(function (newValue) {
-		self.LoadDataset(newValue.url);
-	});
 
 	self.fetchData = function (url) {
 		return new Promise((resolve, reject) => {
@@ -226,9 +244,7 @@ function ViewModel() {
 
                 self.messages(error);
                 $('#messages').attr("class", "alert alert-danger");
-                // TODO : Text not displaying correctly
-                $('#track-info').html("Error: " + error);
-            });;
+            });
     };
 	self.LoadDataset = function (url) {		
         self.selectedCreatureClass(null);
@@ -268,15 +284,13 @@ function ViewModel() {
 
                 self.messages(error);
                 $('#messages').attr("class", "alert alert-danger");
-                // TODO : Text not displaying correctly
-                $('#track-info').html("Error: " + error);
             });
 	};
 
 	self.resizedNotifier = ko.observable();
 	self.Init = function () {
 		ko.applyBindings(self);
-		self.LoadDataset(self.datasets[0].url);
+		self.LoadDataset(self.selectedDataset().url);
 		window.addEventListener('resize', function(){
 			self.resizedNotifier.valueHasMutated();
 		});
