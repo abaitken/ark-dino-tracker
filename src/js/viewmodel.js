@@ -66,7 +66,8 @@ ko.bindingHandlers.coordtooltip = {
 };
 
 var levelColors = [
-	{ min: 0, max: 24, color: 'white' },
+    { min: 0, max: 0, color: 'black' },
+	{ min: 1, max: 24, color: 'white' },
 	{ min: 25, max: 49, color: 'green' },
 	{ min: 50, max: 74, color: 'blue' },
 	{ min: 75, max: 99, color: 'purple' },
@@ -108,7 +109,7 @@ let availableMaps = [
 		ScaleFactor: 20,
 		ImageOffsetLeft: 20,
 		ImageOffsetTop: 30,
-		Datasets: [{ url: 'se-wild.json', Text: 'Wild' }, { url: 'se-tamed.json', Text: 'Tamed' }]
+		Datasets: [{ url: 'se-wild.json', Text: 'Wild' }, { url: 'se-tamed.json', Text: 'Tamed' }, { url: 'se-structures.json', Text: 'Structures' }]
 	},
 	{
 		Id: "island",
