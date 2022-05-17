@@ -131,6 +131,7 @@ function ViewModel() {
 	self.showTooltips = ko.observable(false);
 	self.scale = ko.observable(1.0);
 	self.creatureClasses = ko.observableArray([]);
+	self.mappings = null;
 	self.allLocations = ko.observableArray([]);
 	self.locations = ko.observableArray([]);
 	self.colorLegend = levelColors;
@@ -228,8 +229,11 @@ function ViewModel() {
         self.fetchData(self.selectedDataset().url)
             .then((data) => {
                 self.lastUpdated(data['LastUpdated']);
+				
+				let currentClass = self.selectedCreatureClass();
+				let selectedClass = null;
 
-                let mappings = values[1];
+                let mappings = self.mappings;
                 let creatureClasses = [];
                 for (let index = 0; index < data['CreatureClasses'].length; index++) {
                     const element = data['CreatureClasses'][index];
@@ -240,13 +244,16 @@ function ViewModel() {
 
                     let item = new CreatureClass(element, name);
                     creatureClasses.push(item);
+
+					if(currentClass !== null && currentClass.ClassName === element)
+						selectedClass = item;
                 }
                 creatureClasses.sort(function (left, right) {
                     return Compare(left.Text, right.Text);
-                });
+                });				
                 self.creatureClasses(creatureClasses);
                 self.allLocations(data['Locations']);
-                self.selectedCreatureClass().valueHasMutated();
+				self.selectedCreatureClass(selectedClass);
             })
             .catch((errors) => {
 
@@ -270,6 +277,7 @@ function ViewModel() {
                 self.lastUpdated(data['LastUpdated']);
 
                 let mappings = values[1];
+				self.mappings = mappings;
                 let creatureClasses = [];
                 for (let index = 0; index < data['CreatureClasses'].length; index++) {
                     const element = data['CreatureClasses'][index];
