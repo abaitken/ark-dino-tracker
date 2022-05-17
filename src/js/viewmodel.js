@@ -36,7 +36,7 @@ var UpdateTooltipPosition = function (element) {
 	let leftOffset = rect.left;
 	let mouseOffsetTop = 10;
 	let mouseOffsetLeft = 10;
-	return function(event) {
+	return function (event) {
 		let left = event.pageX - leftOffset;
 		let top = event.pageY - topOffset;
 		$(".coordinateTooltip").css({
@@ -49,24 +49,24 @@ var UpdateTooltipPosition = function (element) {
 ko.bindingHandlers.coordtooltip = {
 	init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
 		$(element).on("mousemove", UpdateTooltipPosition(element));
-		$(element).on("mouseenter", function(event) {
-			if(viewModel.showTooltips())
-				$(".coordinateTooltip").css({display: 'block'});
+		$(element).on("mouseenter", function (event) {
+			if (viewModel.showTooltips())
+				$(".coordinateTooltip").css({ display: 'block' });
 		});
-		$(element).on("mouseleave", function(event){			
-			$(".coordinateTooltip").css({display: 'none'});
+		$(element).on("mouseleave", function (event) {
+			$(".coordinateTooltip").css({ display: 'none' });
 		});
 
 
 		ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
-			$(".coordinateTooltip").css({display: 'none'});
+			$(".coordinateTooltip").css({ display: 'none' });
 			$(element).off("mousemove", UpdateTooltipPosition(element));
 		});
 	}
 };
 
 var levelColors = [
-    { min: 0, max: 0, color: 'black' },
+	{ min: 0, max: 0, color: 'black' },
 	{ min: 1, max: 24, color: 'white' },
 	{ min: 25, max: 49, color: 'green' },
 	{ min: 50, max: 74, color: 'blue' },
@@ -137,8 +137,8 @@ function ViewModel() {
 	self.colorLegend = levelColors;
 	self.maps = availableMaps;
 	self.selectedMap = ko.observable(self.maps[0]);
-	self.datasets = ko.pureComputed(function () { 
-		return self.selectedMap().Datasets; 
+	self.datasets = ko.pureComputed(function () {
+		return self.selectedMap().Datasets;
 	});
 	self.selectedDataset = ko.observable(self.datasets()[0]);
 	self.selectedDataset.subscribe(function (newValue) {
@@ -180,7 +180,7 @@ function ViewModel() {
 		let imageTopOffset = map.ImageOffsetTop;
 		return (imageTopOffset + (factor * lat) - (markerSize / 2)) * scale;
 	};
-	self.ConvertXToLon = function(x) {
+	self.ConvertXToLon = function (x) {
 		let map = self.selectedMap();
 		let originalHeight = map.ImageOriginalHeight;
 		let currentHeight = $("#mapImage").height();
@@ -198,7 +198,7 @@ function ViewModel() {
 		let imageLeftOffset = map.ImageOffsetLeft;
 		return (imageLeftOffset + (factor * lon) - (markerSize / 2)) * scale;
 	};
-	self.ConvertYToLat = function(y) {
+	self.ConvertYToLat = function (y) {
 		let map = self.selectedMap();
 		let originalWidth = map.ImageOriginalWidth;
 		let currentWidth = $("#mapImage").width();
@@ -224,97 +224,89 @@ function ViewModel() {
 			});
 		});
 	}
-    
-    self.RefreshData = function() {
-        self.fetchData(self.selectedDataset().url)
-            .then((data) => {
-                self.lastUpdated(data['LastUpdated']);
-				
+
+	self.fetchMappings = function () {
+		let url = 'class-mapping.json';
+		return new Promise((resolve, reject) => {
+			if (self.mappings) {
+				resolve(self.mappings);
+			}
+			else {
+				$.ajax({
+					type: 'GET',
+					url: url,
+					dataType: 'json',
+					mimeType: 'application/json',
+					success: function (data) {
+						self.mappings = data;
+						resolve(data);
+					},
+					error: function (error) {
+						reject(error);
+					}
+				});
+			}
+		});
+	};
+	self.handleErrors = function(errors) {
+		let error = '';
+
+		for (let index = 0; index < errors.length; index++) {
+			const element = errors[index];
+			error += element;
+		}
+
+		self.messages(error);
+		$('#messages').attr("class", "alert alert-danger");
+	};
+
+	self.RefreshData = function () {
+		self.LoadDataset(self.selectedDataset().url);
+	};
+
+	self.LoadDataset = function (url) {
+		Promise.all([self.fetchData(url), self.fetchMappings()])
+			.then((values) => {
+				let data = values[0];
+				let mappings = values[1];
+				self.lastUpdated(data['LastUpdated']);
+
 				let currentClass = self.selectedCreatureClass();
 				let selectedClass = null;
 
-                let mappings = self.mappings;
-                let creatureClasses = [];
-                for (let index = 0; index < data['CreatureClasses'].length; index++) {
-                    const element = data['CreatureClasses'][index];
+				let creatureClasses = [];
+				for (let index = 0; index < data['CreatureClasses'].length; index++) {
+					const element = data['CreatureClasses'][index];
 
-                    let name = mappings[element];
-                    if (name == null)
-                        name = element;
+					let name = mappings[element];
+					if (name == null)
+						name = element;
 
-                    let item = new CreatureClass(element, name);
-                    creatureClasses.push(item);
+					let item = new CreatureClass(element, name);
+					creatureClasses.push(item);
 
-					if(currentClass !== null && currentClass.ClassName === element)
+					if (currentClass && currentClass.ClassName === element)
 						selectedClass = item;
-                }
-                creatureClasses.sort(function (left, right) {
-                    return Compare(left.Text, right.Text);
-                });				
-                self.creatureClasses(creatureClasses);
-                self.allLocations(data['Locations']);
+				}
+				creatureClasses.sort(function (left, right) {
+					return Compare(left.Text, right.Text);
+				});
+				self.creatureClasses(creatureClasses);
+				self.allLocations(data['Locations']);
 				self.selectedCreatureClass(selectedClass);
-            })
-            .catch((errors) => {
-
-                let error = '';
-
-                for (let index = 0; index < errors.length; index++) {
-                    const element = errors[index];
-                    error += element;
-                }
-
-                self.messages(error);
-                $('#messages').attr("class", "alert alert-danger");
-            });
-    };
-	self.LoadDataset = function (url) {		
-        self.selectedCreatureClass(null);
-        self.dataReady(false);
-        Promise.all([self.fetchData(url), self.fetchData('class-mapping.json')])
-            .then((values) => {
-                let data = values[0];
-                self.lastUpdated(data['LastUpdated']);
-
-                let mappings = values[1];
-				self.mappings = mappings;
-                let creatureClasses = [];
-                for (let index = 0; index < data['CreatureClasses'].length; index++) {
-                    const element = data['CreatureClasses'][index];
-
-                    let name = mappings[element];
-                    if (name == null)
-                        name = element;
-
-                    let item = new CreatureClass(element, name);
-                    creatureClasses.push(item);
-                }
-                creatureClasses.sort(function (left, right) {
-                    return Compare(left.Text, right.Text);
-                });
-                self.creatureClasses(creatureClasses);
-                self.allLocations(data['Locations']);
-                self.dataReady(true);
-            })
-            .catch((errors) => {
-
-                let error = '';
-
-                for (let index = 0; index < errors.length; index++) {
-                    const element = errors[index];
-                    error += element;
-                }
-
-                self.messages(error);
-                $('#messages').attr("class", "alert alert-danger");
-            });
+				if(!self.dataReady())
+					self.dataReady(true);
+			})
+			.catch((errors) => {
+				self.handleErrors(errors);
+			});
 	};
 
 	self.resizedNotifier = ko.observable();
 	self.Init = function () {
 		ko.applyBindings(self);
 		self.LoadDataset(self.selectedDataset().url);
-		window.addEventListener('resize', function(){
+		window.addEventListener('resize', function () {
 			self.resizedNotifier.valueHasMutated();
 		});
 	};
