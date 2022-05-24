@@ -4,6 +4,8 @@ sshpass -p $SFTPPASS -v sftp -v -oStrictHostKeyChecking=no $SFTPUSRN@$SFTPADDR <
 cd $SFTPDEST
 put src/class-mapping.json
 put src/index.html
+cd $SFTPDEST/api
+put api/index.php
 cd $SFTPDEST/css
 put src/css/bootstrap-grid.css
 put src/css/bootstrap-grid.css.map

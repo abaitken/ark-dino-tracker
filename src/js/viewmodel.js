@@ -109,7 +109,7 @@ let availableMaps = [
 		ScaleFactor: 20,
 		ImageOffsetLeft: 20,
 		ImageOffsetTop: 30,
-		Datasets: [{ url: 'se-wild.json', Text: 'Wild' }, { url: 'se-tamed.json', Text: 'Tamed' }, { url: 'se-structures.json', Text: 'Structures' }]
+		Datasets: [{ id: 'se-wild', Text: 'Wild' }, { id: 'se-tamed', Text: 'Tamed' }, { id: 'se-structures', Text: 'Structures' }]
 	},
 	{
 		Id: "island",
@@ -120,7 +120,7 @@ let availableMaps = [
 		ScaleFactor: 20,
 		ImageOffsetLeft: 20,
 		ImageOffsetTop: 30,
-		Datasets: [{ url: 'wild.json', Text: 'Wild' }, { url: 'tamed.json', Text: 'Tamed' }]
+		Datasets: [{ id: 'wild', Text: 'Wild' }, { id: 'tamed', Text: 'Tamed' }]
 	}
 ];
 
@@ -142,7 +142,7 @@ function ViewModel() {
 	});
 	self.selectedDataset = ko.observable(self.datasets()[0]);
 	self.selectedDataset.subscribe(function (newValue) {
-		self.LoadDataset(newValue.url);
+		self.LoadDataset(newValue.id);
 	});
 	self.creatureNumber = ko.pureComputed(function () {
 		return self.locations().length;
@@ -226,12 +226,12 @@ function ViewModel() {
 	}
 
 	self.fetchMappings = function () {
-		let url = 'class-mapping.json';
 		return new Promise((resolve, reject) => {
 			if (self.mappings) {
 				resolve(self.mappings);
 			}
 			else {
+                let url = self.GenerateDatasetUrl('class-mapping');
 				$.ajax({
 					type: 'GET',
 					url: url,
@@ -259,12 +259,20 @@ function ViewModel() {
 		self.messages(error);
 		$('#messages').attr("class", "alert alert-danger");
 	};
+    
+    self.GenerateDatasetUrl = function(id) {
+        if(location.href.startsWith('file'))
+            return 'data/' + id + '.json';
+        
+        return 'api/index.php?id=' + id;
+    };
 
 	self.RefreshData = function () {
-		self.LoadDataset(self.selectedDataset().url);
+		self.LoadDataset(self.selectedDataset().id);
 	};
 
-	self.LoadDataset = function (url) {
+	self.LoadDataset = function (id) {
+        let url = self.GenerateDatasetUrl(id);
 		Promise.all([self.fetchData(url), self.fetchMappings()])
 			.then((values) => {
 				let data = values[0];
@@ -305,7 +313,7 @@ function ViewModel() {
 	self.resizedNotifier = ko.observable();
 	self.Init = function () {
 		ko.applyBindings(self);
-		self.LoadDataset(self.selectedDataset().url);
+		self.LoadDataset(self.selectedDataset().id);
 		window.addEventListener('resize', function () {
 			self.resizedNotifier.valueHasMutated();
 		});
