@@ -36,6 +36,7 @@ cd $SFTPDEST/img
 put src/img/refresh.png
 put src/img/scorched_earth.jpg
 put src/img/the_island.jpeg
+put src/img/aberration.png
 cd $SFTPDEST/js
 put src/js/bootstrap.bundle.js
 put src/js/bootstrap.bundle.js.map

@@ -101,7 +101,20 @@ function Compare(left, right) {
 const markerSize = 5;
 let availableMaps = [
 	{
+		Id: "aberration",
+        Hidden: true,
+		Text: "Aberration",
+		Image: "img/aberration.png",
+		ImageOriginalWidth: 2048,
+		ImageOriginalHeight: 2048,
+		ScaleFactor: 20,
+		ImageOffsetLeft: 20,
+		ImageOffsetTop: 30,
+		Datasets: [{ id: 'ab-wild', Text: 'Wild' }, { id: 'ab-tamed', Text: 'Tamed' }, { id: 'ab-structures', Text: 'Structures' }]
+	},
+	{
 		Id: "scorched",
+        Hidden: false,
 		Text: "Scorched Earth",
 		Image: "img/scorched_earth.jpg",
 		ImageOriginalWidth: 2048,
@@ -113,6 +126,7 @@ let availableMaps = [
 	},
 	{
 		Id: "island",
+        Hidden: false,
 		Text: "The Island",
 		Image: "img/the_island.jpeg",
 		ImageOriginalWidth: 2048,
@@ -123,6 +137,18 @@ let availableMaps = [
 		Datasets: [{ id: 'wild', Text: 'Wild' }, { id: 'tamed', Text: 'Tamed' }]
 	}
 ];
+
+function selectMaps() {
+    let result = [];
+    
+    for (let index = 0; index < availableMaps.length; index++) {
+        const element = availableMaps[index];
+        if(!element.Hidden)
+            result.push(element);
+    }
+    
+    return result;
+}
 
 function ViewModel() {
 	let self = this;
@@ -135,7 +161,7 @@ function ViewModel() {
 	self.allLocations = ko.observableArray([]);
 	self.locations = ko.observableArray([]);
 	self.colorLegend = levelColors;
-	self.maps = availableMaps;
+	self.maps = selectMaps();
 	self.selectedMap = ko.observable(self.maps[0]);
 	self.datasets = ko.pureComputed(function () {
 		return self.selectedMap().Datasets;
