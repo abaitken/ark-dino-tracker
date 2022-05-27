@@ -38,6 +38,8 @@ put src/img/refresh.png
 put src/img/scorched_earth.jpg
 put src/img/the_island.jpeg
 put src/img/aberration.png
+put src/img/Tex_skill_58.png
+put src/img/favicon.ico
 cd $SFTPDEST/js
 put src/js/bootstrap.bundle.js
 put src/js/bootstrap.bundle.js.map
