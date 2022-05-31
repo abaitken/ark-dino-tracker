@@ -242,7 +242,7 @@ let availableMaps = [
 		ScaleFactor: 20,
 		ImageOffsetLeft: 20,
 		ImageOffsetTop: 30,
-		Datasets: [{ id: 'wild', Text: 'Wild' }, { id: 'tamed', Text: 'Tamed' }, { id: 'structures', Text: 'Structures' }]
+		Datasets: [{ id: 'ti-wild', Text: 'Wild' }, { id: 'ti-tamed', Text: 'Tamed' }, { id: 'ti-structures', Text: 'Structures' }]
 	}
 ];
 
