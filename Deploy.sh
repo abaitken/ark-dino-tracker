@@ -35,6 +35,14 @@ put src/css/themes/default-dark/style.min.css
 put src/css/themes/default-dark/throbber.gif
 cd $SFTPDEST/img
 put src/img/refresh.png
+put src/img/crystalis.jpeg
+put src/img/extinction.jpeg
+put src/img/gen1.jpeg
+put src/img/gen2.jpeg
+put src/img/lostis.jpeg
+put src/img/ragnarok.jpeg
+put src/img/the_center.jpeg
+put src/img/valguero.jpeg
 put src/img/scorched_earth.jpg
 put src/img/the_island.jpeg
 put src/img/aberration.png
