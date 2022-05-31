@@ -5,6 +5,7 @@ cd $SFTPDEST
 put src/index.html
 cd $SFTPDEST/data
 put src/data/class-mapping.json
+put src/data/maps.json
 cd $SFTPDEST/api
 put src/api/index.php
 cd $SFTPDEST/css
