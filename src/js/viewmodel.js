@@ -99,165 +99,6 @@ function Compare(left, right) {
 }
 
 const markerSize = 5;
-let availableMaps = [
-	{
-		Id: "fjordur",
-        Hidden: true,
-		Text: "Fjordur",
-		Image: "img/fjordur.jpeg",
-		ImageOriginalWidth: 2048,
-		ImageOriginalHeight: 2048,
-		ScaleFactor: 20,
-		ImageOffsetLeft: 20,
-		ImageOffsetTop: 30,
-		Datasets: [{ id: 'fj-wild', Text: 'Wild' }, { id: 'fj-tamed', Text: 'Tamed' }, { id: 'fj-structures', Text: 'Structures' }]
-	},
-	{
-		Id: "lostis",
-        Hidden: true,
-		Text: "Lost Island",
-		Image: "img/lostis.jpeg",
-		ImageOriginalWidth: 2048,
-		ImageOriginalHeight: 2048,
-		ScaleFactor: 20,
-		ImageOffsetLeft: 20,
-		ImageOffsetTop: 30,
-		Datasets: [{ id: 'li-wild', Text: 'Wild' }, { id: 'li-tamed', Text: 'Tamed' }, { id: 'li-structures', Text: 'Structures' }]
-	},
-	{
-		Id: "crystalis",
-        Hidden: true,
-		Text: "Crystal Isles",
-		Image: "img/crystalis.jpeg",
-		ImageOriginalWidth: 1024,
-		ImageOriginalHeight: 1024,
-		ScaleFactor: 10,
-		ImageOffsetLeft: 20,
-		ImageOffsetTop: 30,
-		Datasets: [{ id: 'ci-wild', Text: 'Wild' }, { id: 'ci-tamed', Text: 'Tamed' }, { id: 'ci-structures', Text: 'Structures' }]
-	},
-	{
-		Id: "valguero",
-        Hidden: true,
-		Text: "Valguero",
-		Image: "img/valguero.jpeg",
-		ImageOriginalWidth: 1024,
-		ImageOriginalHeight: 1024,
-		ScaleFactor: 10,
-		ImageOffsetLeft: 20,
-		ImageOffsetTop: 30,
-		Datasets: [{ id: 'val-wild', Text: 'Wild' }, { id: 'val-tamed', Text: 'Tamed' }, { id: 'val-structures', Text: 'Structures' }]
-	},
-	{
-		Id: "ragnarok",
-        Hidden: true,
-		Text: "Ragnarok",
-		Image: "img/ragnarok.jpeg",
-		ImageOriginalWidth: 1024,
-		ImageOriginalHeight: 1024,
-		ScaleFactor: 10,
-		ImageOffsetLeft: 20,
-		ImageOffsetTop: 20,
-		Datasets: [{ id: 'rag-wild', Text: 'Wild' }, { id: 'rag-tamed', Text: 'Tamed' }, { id: 'rag-structures', Text: 'Structures' }]
-	},
-	{
-		Id: "center",
-        Hidden: true,
-		Text: "The Center",
-		Image: "img/the_center.jpeg",
-		ImageOriginalWidth: 1024,
-		ImageOriginalHeight: 1024,
-		ScaleFactor: 10,
-		ImageOffsetLeft: 20,
-		ImageOffsetTop: 30,
-		Datasets: [{ id: 'tc-wild', Text: 'Wild' }, { id: 'tc-tamed', Text: 'Tamed' }, { id: 'tc-structures', Text: 'Structures' }]
-	},
-	{
-		Id: "gen2",
-        Hidden: true,
-		Text: "Genesis 2",
-		Image: "img/gen2.jpeg",
-		ImageOriginalWidth: 2048,
-		ImageOriginalHeight: 2048,
-		ScaleFactor: 20,
-		ImageOffsetLeft: 20,
-		ImageOffsetTop: 30,
-		Datasets: [{ id: 'g2-wild', Text: 'Wild' }, { id: 'g2-tamed', Text: 'Tamed' }, { id: 'g2-structures', Text: 'Structures' }]
-	},
-	{
-		Id: "gen1",
-        Hidden: true,
-		Text: "Genesis 1",
-		Image: "img/gen1.jpeg",
-		ImageOriginalWidth: 2048,
-		ImageOriginalHeight: 2048,
-		ScaleFactor: 20,
-		ImageOffsetLeft: 20,
-		ImageOffsetTop: 30,
-		Datasets: [{ id: 'g1-wild', Text: 'Wild' }, { id: 'g1-tamed', Text: 'Tamed' }, { id: 'g1-structures', Text: 'Structures' }]
-	},
-	{
-		Id: "extinction",
-        Hidden: true,
-		Text: "Extinction",
-		Image: "img/extinction.jpeg",
-		ImageOriginalWidth: 2048,
-		ImageOriginalHeight: 2048,
-		ScaleFactor: 20,
-		ImageOffsetLeft: 20,
-		ImageOffsetTop: 30,
-		Datasets: [{ id: 'ex-wild', Text: 'Wild' }, { id: 'ex-tamed', Text: 'Tamed' }, { id: 'ex-structures', Text: 'Structures' }]
-	},
-	{
-		Id: "aberration",
-        Hidden: true,
-		Text: "Aberration",
-		Image: "img/aberration.png",
-		ImageOriginalWidth: 2048,
-		ImageOriginalHeight: 2048,
-		ScaleFactor: 20,
-		ImageOffsetLeft: 20,
-		ImageOffsetTop: 30,
-		Datasets: [{ id: 'ab-wild', Text: 'Wild' }, { id: 'ab-tamed', Text: 'Tamed' }, { id: 'ab-structures', Text: 'Structures' }]
-	},
-	{
-		Id: "scorched",
-        Hidden: false,
-		Text: "Scorched Earth",
-		Image: "img/scorched_earth.jpg",
-		ImageOriginalWidth: 2048,
-		ImageOriginalHeight: 2048,
-		ScaleFactor: 20,
-		ImageOffsetLeft: 20,
-		ImageOffsetTop: 30,
-		Datasets: [{ id: 'se-wild', Text: 'Wild' }, { id: 'se-tamed', Text: 'Tamed' }, { id: 'se-structures', Text: 'Structures' }]
-	},
-	{
-		Id: "island",
-        Hidden: false,
-		Text: "The Island",
-		Image: "img/the_island.jpeg",
-		ImageOriginalWidth: 2048,
-		ImageOriginalHeight: 2048,
-		ScaleFactor: 20,
-		ImageOffsetLeft: 20,
-		ImageOffsetTop: 30,
-		Datasets: [{ id: 'ti-wild', Text: 'Wild' }, { id: 'ti-tamed', Text: 'Tamed' }, { id: 'ti-structures', Text: 'Structures' }]
-	}
-];
-
-function selectMaps() {
-    let result = [];
-    
-    let devMode = location.search != null && location.search.includes('dev=');
-    for (let index = 0; index < availableMaps.length; index++) {
-        const element = availableMaps[index];
-        if(!element.Hidden || devMode)
-            result.push(element);
-    }
-    
-    return result;
-}
 
 function ViewModel() {
 	let self = this;
@@ -270,12 +111,15 @@ function ViewModel() {
 	self.allLocations = ko.observableArray([]);
 	self.locations = ko.observableArray([]);
 	self.colorLegend = levelColors;
-	self.maps = selectMaps();
-	self.selectedMap = ko.observable(self.maps[0]);
+	self.maps = [];
+	self.selectedMap = ko.observable(null);
 	self.datasets = ko.pureComputed(function () {
-		return self.selectedMap().Datasets;
+        let value = self.selectedMap();
+        if(value == null)
+            return [];
+		return value.Datasets;
 	});
-	self.selectedDataset = ko.observable(self.datasets()[0]);
+	self.selectedDataset = ko.observable(null);
 	self.selectedDataset.subscribe(function (newValue) {
 		self.LoadDataset(newValue.id);
 	});
@@ -446,12 +290,27 @@ function ViewModel() {
 	};
 
 	self.resizedNotifier = ko.observable();
-	self.Init = function () {
-		ko.applyBindings(self);
-		self.LoadDataset(self.selectedDataset().id);
-		window.addEventListener('resize', function () {
-			self.resizedNotifier.valueHasMutated();
-		});
+	self.Init = function () {        
+        self.fetchData(self.GenerateDatasetUrl('maps'))
+        .then((data) => {
+            let selectedMaps = [];
+    
+            let devMode = location.search != null && location.search.includes('dev=');
+            for (let index = 0; index < data.length; index++) {
+                const element = data[index];
+                if(!element.Hidden || devMode)
+                    selectedMaps.push(element);
+            }
+            
+            self.maps = selectedMaps;
+            self.selectedMap(self.maps[0]);
+            self.selectedDataset(self.datasets()[0]);
+            ko.applyBindings(self);
+            self.LoadDataset(self.selectedDataset().id);
+            window.addEventListener('resize', function () {
+                self.resizedNotifier.valueHasMutated();
+            });
+        });
 	};
 }
 
