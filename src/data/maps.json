@@ -109,7 +109,7 @@
 	},
 	{
 		"Id": "aberration",
-        "Hidden": true,
+        "Hidden": false,
 		"Text": "Aberration",
 		"Image": "img/aberration.png",
 		"ImageOriginalWidth": 2048,
