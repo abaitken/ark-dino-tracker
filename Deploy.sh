@@ -59,10 +59,7 @@ put src/js/bootstrap.js.map
 put src/js/bootstrap.min.js
 put src/js/bootstrap.min.js.map
 put src/js/jquery-3.4.1.min.js
-put src/js/jstree.js
-put src/js/jstree.min.js
 put src/js/knockout-3.5.0.js
-put src/js/popper.min.js
 put src/js/viewmodel.js
 bye
 !
