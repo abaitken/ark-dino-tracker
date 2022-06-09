@@ -29,7 +29,7 @@ ko.bindingHandlers.levelIndicator = {
 	}
 };
 
-var UpdateTooltipPosition = function (element) {
+let UpdateTooltipPosition = function (element) {
 
 	let rect = element.getBoundingClientRect()
 	let topOffset = rect.top;
@@ -65,7 +65,35 @@ ko.bindingHandlers.coordtooltip = {
 	}
 };
 
-var levelColors = [
+let DataTools = new function() {
+	let self = this;
+    
+    self.GenerateDatasetUrl = function(id) {
+        if(location.href.startsWith('file'))
+            return 'data/' + id + '.json';
+        
+        return 'api/index.php?id=' + id;
+    };
+
+	self.FetchData = function (url) {
+		return new Promise((resolve, reject) => {
+			$.ajax({
+				type: 'GET',
+				url: url,
+				dataType: 'json',
+				mimeType: 'application/json',
+				success: function (data) {
+					resolve(data);
+				},
+				error: function (error) {
+					reject(error);
+				}
+			});
+		});
+	};
+};
+
+let levelColors = [
 	{ min: 0, max: 0, color: 'black' },
 	{ min: 1, max: 24, color: 'white' },
 	{ min: 25, max: 49, color: 'green' },
@@ -108,7 +136,7 @@ function ViewModel() {
 	self.scale = ko.observable(1.0);
 	self.creatureClasses = ko.observableArray([]);
 	self.mappings = null;
-	self.allLocations = ko.observableArray([]);
+	self.locationDataStrategy = new LocationDataStrategy([]);
 	self.locations = ko.observableArray([]);
 	self.colorLegend = levelColors;
 	self.maps = [];
@@ -136,8 +164,10 @@ function ViewModel() {
 	})
 	self.selectedCreatureClass.subscribe(function (newValue) {
 		if (newValue) {
-			let values = self.allLocations()[newValue.ClassName];
-			self.locations(values);
+			self.locationDataStrategy.Load(newValue.ClassName)
+			.then((values) => {
+				self.locations(values);
+			});
 		}
 		else
 			self.locations([]);
@@ -187,30 +217,13 @@ function ViewModel() {
 		return ((y / scale) - imageLeftOffset) / factor;
 	};
 
-	self.fetchData = function (url) {
-		return new Promise((resolve, reject) => {
-			$.ajax({
-				type: 'GET',
-				url: url,
-				dataType: 'json',
-				mimeType: 'application/json',
-				success: function (data) {
-					resolve(data);
-				},
-				error: function (error) {
-					reject(error);
-				}
-			});
-		});
-	}
-
 	self.fetchMappings = function () {
 		return new Promise((resolve, reject) => {
 			if (self.mappings) {
 				resolve(self.mappings);
 			}
 			else {
-                let url = self.GenerateDatasetUrl('class-mapping');
+                let url = DataTools.GenerateDatasetUrl('class-mapping');
 				$.ajax({
 					type: 'GET',
 					url: url,
@@ -238,21 +251,14 @@ function ViewModel() {
 		self.messages(error);
 		$('#messages').attr("class", "alert alert-danger");
 	};
-    
-    self.GenerateDatasetUrl = function(id) {
-        if(location.href.startsWith('file'))
-            return 'data/' + id + '.json';
-        
-        return 'api/index.php?id=' + id;
-    };
 
 	self.RefreshData = function () {
 		self.LoadDataset(self.selectedDataset().id);
 	};
 
 	self.LoadDataset = function (id) {
-        let url = self.GenerateDatasetUrl(id);
-		Promise.all([self.fetchData(url), self.fetchMappings()])
+        let url = DataTools.GenerateDatasetUrl(id);
+		Promise.all([DataTools.FetchData(url), self.fetchMappings()])
 			.then((values) => {
 				let data = values[0];
 				let mappings = values[1];
@@ -279,7 +285,7 @@ function ViewModel() {
 					return Compare(left.Text, right.Text);
 				});
 				self.creatureClasses(creatureClasses);
-				self.allLocations(data['Locations']);
+				self.locationDataStrategy = new LocationDataStrategy(data['Locations']);
 				self.selectedCreatureClass(selectedClass);
 				if(!self.dataReady())
 					self.dataReady(true);
@@ -291,7 +297,7 @@ function ViewModel() {
 
 	self.resizedNotifier = ko.observable();
 	self.Init = function () {        
-        self.fetchData(self.GenerateDatasetUrl('maps'))
+        DataTools.FetchData(DataTools.GenerateDatasetUrl('maps'))
         .then((data) => {
             let selectedMaps = [];
     
@@ -320,5 +326,17 @@ function CreatureClass(className, name) {
 	self.Text = name;
 }
 
-var vm = new ViewModel();
+function LocationDataStrategy(allLocations) {
+	let self = this;
+
+	self.allLocations = allLocations;
+
+	self.Load = function(id) {
+		return new Promise((resolve, reject) => {
+			resolve(self.allLocations[id]);
+		});
+	};
+}
+
+let vm = new ViewModel();
 vm.Init();
