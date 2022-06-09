@@ -74,6 +74,13 @@ let DataTools = new function() {
         
         return 'api/index.php?id=' + id;
     };
+    
+    self.GenerateChunkedDatasetUrl = function(datasetId, id) {
+        if(location.href.startsWith('file'))
+            return 'data/' + datasetId + '/' + id + '.json';
+        
+        return 'api/index.php?id=' + id + '&set=' + datasetId;
+    };
 
 	self.FetchData = function (url) {
 		return new Promise((resolve, reject) => {
@@ -136,7 +143,7 @@ function ViewModel() {
 	self.scale = ko.observable(1.0);
 	self.creatureClasses = ko.observableArray([]);
 	self.mappings = null;
-	self.locationDataStrategy = new LocationDataStrategy([]);
+	self.locationDataStrategy = new EmptyLocationDataStrategy([]);
 	self.locations = ko.observableArray([]);
 	self.colorLegend = levelColors;
 	self.maps = [];
@@ -149,7 +156,7 @@ function ViewModel() {
 	});
 	self.selectedDataset = ko.observable(null);
 	self.selectedDataset.subscribe(function (newValue) {
-		self.LoadDataset(newValue.id);
+		self.LoadDataset(newValue);
 	});
 	self.creatureNumber = ko.pureComputed(function () {
 		return self.locations().length;
@@ -240,6 +247,17 @@ function ViewModel() {
 			}
 		});
 	};
+
+	self.fetchSetData = function (dataset) {
+		return new Promise((resolve, reject) => {
+
+			let url = DataTools.GenerateDatasetUrl(dataset.id);
+			DataTools.FetchData(url)
+			.then((data) => {
+				resolve(data);
+			});
+		});
+	};
 	self.handleErrors = function(errors) {
 		let error = '';
 
@@ -253,12 +271,15 @@ function ViewModel() {
 	};
 
 	self.RefreshData = function () {
-		self.LoadDataset(self.selectedDataset().id);
+		self.LoadDataset(self.selectedDataset());
 	};
 
-	self.LoadDataset = function (id) {
-        let url = DataTools.GenerateDatasetUrl(id);
-		Promise.all([DataTools.FetchData(url), self.fetchMappings()])
+	self.CreateDataStrategy = function(dataset, data) {
+		return new MonolithLocationDataStrategy(data['Locations']);
+	};
+
+	self.LoadDataset = function (dataset) {
+		Promise.all([self.fetchSetData(dataset), self.fetchMappings()])
 			.then((values) => {
 				let data = values[0];
 				let mappings = values[1];
@@ -285,7 +306,7 @@ function ViewModel() {
 					return Compare(left.Text, right.Text);
 				});
 				self.creatureClasses(creatureClasses);
-				self.locationDataStrategy = new LocationDataStrategy(data['Locations']);
+				self.locationDataStrategy = self.CreateDataStrategy(dataset, data);
 				self.selectedCreatureClass(selectedClass);
 				if(!self.dataReady())
 					self.dataReady(true);
@@ -312,7 +333,7 @@ function ViewModel() {
             self.selectedMap(self.maps[0]);
             self.selectedDataset(self.datasets()[0]);
             ko.applyBindings(self);
-            self.LoadDataset(self.selectedDataset().id);
+            self.LoadDataset(self.selectedDataset());
             window.addEventListener('resize', function () {
                 self.resizedNotifier.valueHasMutated();
             });
@@ -326,7 +347,7 @@ function CreatureClass(className, name) {
 	self.Text = name;
 }
 
-function LocationDataStrategy(allLocations) {
+function MonolithLocationDataStrategy(allLocations) {
 	let self = this;
 
 	self.allLocations = allLocations;
@@ -334,6 +355,32 @@ function LocationDataStrategy(allLocations) {
 	self.Load = function(id) {
 		return new Promise((resolve, reject) => {
 			resolve(self.allLocations[id]);
+		});
+	};
+}
+
+function ChunkedLocationDataStrategy(datasetId) {
+	let self = this;
+
+	self.datasetId = datasetId;
+
+	self.Load = function(id) {
+		return new Promise((resolve, reject) => {
+			let url = DataTools.GenerateChunkedDatasetUrl(datasetId, id);
+			DataTools.FetchData(url)
+				.then((data) => {
+					resolve(data);
+			});
+		});
+	};
+}
+
+function EmptyLocationDataStrategy() {
+	let self = this;
+
+	self.Load = function(id) {
+		return new Promise((resolve, reject) => {
+			resolve([]);
 		});
 	};
 }
