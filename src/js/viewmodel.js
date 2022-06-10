@@ -374,7 +374,7 @@ function ViewModel() {
                 self.selectedMap(self.maps[0]);
                 self.selectedDataset(self.datasets()[0]);
                 ko.applyBindings(self);
-                self.LoadDataset(self.selectedDataset());
+                //self.LoadDataset(self.selectedDataset());
                 window.addEventListener('resize', function () {
                     self.resizedNotifier.valueHasMutated();
                 });
