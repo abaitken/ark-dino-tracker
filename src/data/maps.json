@@ -9,7 +9,7 @@
 		"ScaleFactor": 20,
 		"ImageOffsetLeft": 20,
 		"ImageOffsetTop": 30,
-		"Datasets": [{ "id": "fj-wild", "Text": "Wild" }, { "id": "fj-tamed", "Text": "Tamed" }, { "id": "fj-structures", "Text": "Structures" }]
+		"Datasets": [{ "id": "fj-wild", "Text": "Wild", "Mode": "chunked" }, { "id": "fj-tamed", "Text": "Tamed", "Mode": "chunked" }, { "id": "fj-structures", "Text": "Structures" }]
 	},
 	{
 		"Id": "lostis",
@@ -21,7 +21,7 @@
 		"ScaleFactor": 20,
 		"ImageOffsetLeft": 20,
 		"ImageOffsetTop": 30,
-		"Datasets": [{ "id": "li-wild", "Text": "Wild" }, { "id": "li-tamed", "Text": "Tamed" }, { "id": "li-structures", "Text": "Structures" }]
+		"Datasets": [{ "id": "li-wild", "Text": "Wild", "Mode": "chunked" }, { "id": "li-tamed", "Text": "Tamed", "Mode": "chunked" }, { "id": "li-structures", "Text": "Structures" }]
 	},
 	{
 		"Id": "crystalis",
@@ -33,7 +33,7 @@
 		"ScaleFactor": 10,
 		"ImageOffsetLeft": 20,
 		"ImageOffsetTop": 30,
-		"Datasets": [{ "id": "ci-wild", "Text": "Wild" }, { "id": "ci-tamed", "Text": "Tamed" }, { "id": "ci-structures", "Text": "Structures" }]
+		"Datasets": [{ "id": "ci-wild", "Text": "Wild", "Mode": "chunked" }, { "id": "ci-tamed", "Text": "Tamed", "Mode": "chunked" }, { "id": "ci-structures", "Text": "Structures" }]
 	},
 	{
 		"Id": "valguero",
@@ -45,7 +45,7 @@
 		"ScaleFactor": 10,
 		"ImageOffsetLeft": 20,
 		"ImageOffsetTop": 30,
-		"Datasets": [{ "id": "val-wild", "Text": "Wild" }, { "id": "val-tamed", "Text": "Tamed" }, { "id": "val-structures", "Text": "Structures" }]
+		"Datasets": [{ "id": "val-wild", "Text": "Wild", "Mode": "chunked" }, { "id": "val-tamed", "Text": "Tamed", "Mode": "chunked" }, { "id": "val-structures", "Text": "Structures" }]
 	},
 	{
 		"Id": "ragnarok",
@@ -57,7 +57,7 @@
 		"ScaleFactor": 10,
 		"ImageOffsetLeft": 20,
 		"ImageOffsetTop": 20,
-		"Datasets": [{ "id": "rag-wild", "Text": "Wild" }, { "id": "rag-tamed", "Text": "Tamed" }, { "id": "rag-structures", "Text": "Structures" }]
+		"Datasets": [{ "id": "rag-wild", "Text": "Wild", "Mode": "chunked" }, { "id": "rag-tamed", "Text": "Tamed", "Mode": "chunked" }, { "id": "rag-structures", "Text": "Structures" }]
 	},
 	{
 		"Id": "center",
@@ -69,7 +69,7 @@
 		"ScaleFactor": 10,
 		"ImageOffsetLeft": 20,
 		"ImageOffsetTop": 30,
-		"Datasets": [{ "id": "tc-wild", "Text": "Wild" }, { "id": "tc-tamed", "Text": "Tamed" }, { "id": "tc-structures", "Text": "Structures" }]
+		"Datasets": [{ "id": "tc-wild", "Text": "Wild", "Mode": "chunked" }, { "id": "tc-tamed", "Text": "Tamed", "Mode": "chunked" }, { "id": "tc-structures", "Text": "Structures" }]
 	},
 	{
 		"Id": "gen2",
@@ -81,7 +81,7 @@
 		"ScaleFactor": 20,
 		"ImageOffsetLeft": 20,
 		"ImageOffsetTop": 30,
-		"Datasets": [{ "id": "g2-wild", "Text": "Wild" }, { "id": "g2-tamed", "Text": "Tamed" }, { "id": "g2-structures", "Text": "Structures" }]
+		"Datasets": [{ "id": "g2-wild", "Text": "Wild", "Mode": "chunked" }, { "id": "g2-tamed", "Text": "Tamed", "Mode": "chunked" }, { "id": "g2-structures", "Text": "Structures" }]
 	},
 	{
 		"Id": "gen1",
@@ -93,7 +93,7 @@
 		"ScaleFactor": 20,
 		"ImageOffsetLeft": 20,
 		"ImageOffsetTop": 30,
-		"Datasets": [{ "id": "g1-wild", "Text": "Wild" }, { "id": "g1-tamed", "Text": "Tamed" }, { "id": "g1-structures", "Text": "Structures" }]
+		"Datasets": [{ "id": "g1-wild", "Text": "Wild", "Mode": "chunked" }, { "id": "g1-tamed", "Text": "Tamed", "Mode": "chunked" }, { "id": "g1-structures", "Text": "Structures" }]
 	},
 	{
 		"Id": "extinction",
@@ -105,7 +105,7 @@
 		"ScaleFactor": 20,
 		"ImageOffsetLeft": 20,
 		"ImageOffsetTop": 30,
-		"Datasets": [{ "id": "ex-wild", "Text": "Wild" }, { "id": "ex-tamed", "Text": "Tamed" }, { "id": "ex-structures", "Text": "Structures" }]
+		"Datasets": [{ "id": "ex-wild", "Text": "Wild", "Mode": "chunked" }, { "id": "ex-tamed", "Text": "Tamed", "Mode": "chunked" }, { "id": "ex-structures", "Text": "Structures" }]
 	},
 	{
 		"Id": "aberration",
@@ -117,7 +117,7 @@
 		"ScaleFactor": 20,
 		"ImageOffsetLeft": 20,
 		"ImageOffsetTop": 30,
-		"Datasets": [{ "id": "ab-wild", "Text": "Wild" }, { "id": "ab-tamed", "Text": "Tamed" }, { "id": "ab-structures", "Text": "Structures" }]
+		"Datasets": [{ "id": "ab-wild", "Text": "Wild", "Mode": "chunked" }, { "id": "ab-tamed", "Text": "Tamed", "Mode": "chunked" }, { "id": "ab-structures", "Text": "Structures" }]
 	},
 	{
 		"Id": "scorched",
@@ -129,7 +129,7 @@
 		"ScaleFactor": 20,
 		"ImageOffsetLeft": 20,
 		"ImageOffsetTop": 30,
-		"Datasets": [{ "id": "se-wild", "Text": "Wild" }, { "id": "se-tamed", "Text": "Tamed" }, { "id": "se-structures", "Text": "Structures" }]
+		"Datasets": [{ "id": "se-wild", "Text": "Wild", "Mode": "chunked" }, { "id": "se-tamed", "Text": "Tamed", "Mode": "chunked" }, { "id": "se-structures", "Text": "Structures" }]
 	},
 	{
 		"Id": "island",
@@ -141,6 +141,6 @@
 		"ScaleFactor": 20,
 		"ImageOffsetLeft": 20,
 		"ImageOffsetTop": 30,
-		"Datasets": [{ "id": "ti-wild", "Text": "Wild" }, { "id": "ti-tamed", "Text": "Tamed" }, { "id": "ti-structures", "Text": "Structures" }]
+		"Datasets": [{ "id": "ti-wild", "Text": "Wild", "Mode": "chunked" }, { "id": "ti-tamed", "Text": "Tamed", "Mode": "chunked" }, { "id": "ti-structures", "Text": "Structures" }]
 	}
 ]
