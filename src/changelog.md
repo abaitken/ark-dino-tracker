@@ -1,5 +1,10 @@
 # ARK Dino Tracker Changelog
 
+## [2.2.2]
+
+### Added
+- Update mapping with missing class names
+
 ## [2.2.1]
 
 ### Fixed
