@@ -7,7 +7,7 @@
 		"ImageOriginalWidth": 2048,
 		"ImageOriginalHeight": 2048,
 		"ScaleFactor": 20,
-		"ImageOffsetLeft": 20,
+		"ImageOffsetLeft": 42,
 		"ImageOffsetTop": 30,
 		"Datasets": [{ "id": "fj-wild", "Text": "Wild", "Mode": "chunked" }, { "id": "fj-tamed", "Text": "Tamed", "Mode": "chunked" }, { "id": "fj-structures", "Text": "Structures" }]
 	},
@@ -19,7 +19,7 @@
 		"ImageOriginalWidth": 2048,
 		"ImageOriginalHeight": 2048,
 		"ScaleFactor": 20,
-		"ImageOffsetLeft": 20,
+		"ImageOffsetLeft": 42,
 		"ImageOffsetTop": 30,
 		"Datasets": [{ "id": "li-wild", "Text": "Wild", "Mode": "chunked" }, { "id": "li-tamed", "Text": "Tamed", "Mode": "chunked" }, { "id": "li-structures", "Text": "Structures" }]
 	},
@@ -31,7 +31,7 @@
 		"ImageOriginalWidth": 1024,
 		"ImageOriginalHeight": 1024,
 		"ScaleFactor": 10,
-		"ImageOffsetLeft": 20,
+		"ImageOffsetLeft": 42,
 		"ImageOffsetTop": 30,
 		"Datasets": [{ "id": "ci-wild", "Text": "Wild", "Mode": "chunked" }, { "id": "ci-tamed", "Text": "Tamed", "Mode": "chunked" }, { "id": "ci-structures", "Text": "Structures" }]
 	},
@@ -43,7 +43,7 @@
 		"ImageOriginalWidth": 1024,
 		"ImageOriginalHeight": 1024,
 		"ScaleFactor": 10,
-		"ImageOffsetLeft": 20,
+		"ImageOffsetLeft": 42,
 		"ImageOffsetTop": 30,
 		"Datasets": [{ "id": "val-wild", "Text": "Wild", "Mode": "chunked" }, { "id": "val-tamed", "Text": "Tamed", "Mode": "chunked" }, { "id": "val-structures", "Text": "Structures" }]
 	},
@@ -55,7 +55,7 @@
 		"ImageOriginalWidth": 1024,
 		"ImageOriginalHeight": 1024,
 		"ScaleFactor": 10,
-		"ImageOffsetLeft": 20,
+		"ImageOffsetLeft": 23,
 		"ImageOffsetTop": 20,
 		"Datasets": [{ "id": "rag-wild", "Text": "Wild", "Mode": "chunked" }, { "id": "rag-tamed", "Text": "Tamed", "Mode": "chunked" }, { "id": "rag-structures", "Text": "Structures" }]
 	},
@@ -67,7 +67,7 @@
 		"ImageOriginalWidth": 1024,
 		"ImageOriginalHeight": 1024,
 		"ScaleFactor": 10,
-		"ImageOffsetLeft": 20,
+		"ImageOffsetLeft": 42,
 		"ImageOffsetTop": 30,
 		"Datasets": [{ "id": "tc-wild", "Text": "Wild", "Mode": "chunked" }, { "id": "tc-tamed", "Text": "Tamed", "Mode": "chunked" }, { "id": "tc-structures", "Text": "Structures" }]
 	},
@@ -79,7 +79,7 @@
 		"ImageOriginalWidth": 2048,
 		"ImageOriginalHeight": 2048,
 		"ScaleFactor": 20,
-		"ImageOffsetLeft": 20,
+		"ImageOffsetLeft": 42,
 		"ImageOffsetTop": 30,
 		"Datasets": [{ "id": "g2-wild", "Text": "Wild", "Mode": "chunked" }, { "id": "g2-tamed", "Text": "Tamed", "Mode": "chunked" }, { "id": "g2-structures", "Text": "Structures" }]
 	},
@@ -91,7 +91,7 @@
 		"ImageOriginalWidth": 2048,
 		"ImageOriginalHeight": 2048,
 		"ScaleFactor": 20,
-		"ImageOffsetLeft": 20,
+		"ImageOffsetLeft": 42,
 		"ImageOffsetTop": 30,
 		"Datasets": [{ "id": "g1-wild", "Text": "Wild", "Mode": "chunked" }, { "id": "g1-tamed", "Text": "Tamed", "Mode": "chunked" }, { "id": "g1-structures", "Text": "Structures" }]
 	},
@@ -103,7 +103,7 @@
 		"ImageOriginalWidth": 2048,
 		"ImageOriginalHeight": 2048,
 		"ScaleFactor": 20,
-		"ImageOffsetLeft": 20,
+		"ImageOffsetLeft": 42,
 		"ImageOffsetTop": 30,
 		"Datasets": [{ "id": "ex-wild", "Text": "Wild", "Mode": "chunked" }, { "id": "ex-tamed", "Text": "Tamed", "Mode": "chunked" }, { "id": "ex-structures", "Text": "Structures" }]
 	},
@@ -115,7 +115,7 @@
 		"ImageOriginalWidth": 2048,
 		"ImageOriginalHeight": 2048,
 		"ScaleFactor": 20,
-		"ImageOffsetLeft": 20,
+		"ImageOffsetLeft": 42,
 		"ImageOffsetTop": 30,
 		"Datasets": [{ "id": "ab-wild", "Text": "Wild", "Mode": "chunked" }, { "id": "ab-tamed", "Text": "Tamed", "Mode": "chunked" }, { "id": "ab-structures", "Text": "Structures" }]
 	},
@@ -127,7 +127,7 @@
 		"ImageOriginalWidth": 2048,
 		"ImageOriginalHeight": 2048,
 		"ScaleFactor": 20,
-		"ImageOffsetLeft": 20,
+		"ImageOffsetLeft": 42,
 		"ImageOffsetTop": 30,
 		"Datasets": [{ "id": "se-wild", "Text": "Wild", "Mode": "chunked" }, { "id": "se-tamed", "Text": "Tamed", "Mode": "chunked" }, { "id": "se-structures", "Text": "Structures" }]
 	},
@@ -139,7 +139,7 @@
 		"ImageOriginalWidth": 2048,
 		"ImageOriginalHeight": 2048,
 		"ScaleFactor": 20,
-		"ImageOffsetLeft": 20,
+		"ImageOffsetLeft": 42,
 		"ImageOffsetTop": 30,
 		"Datasets": [{ "id": "ti-wild", "Text": "Wild", "Mode": "chunked" }, { "id": "ti-tamed", "Text": "Tamed", "Mode": "chunked" }, { "id": "ti-structures", "Text": "Structures" }]
 	}

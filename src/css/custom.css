@@ -68,3 +68,13 @@ body {
   padding: 5px;
   z-index: 1000;
 }
+
+.devOverlay {
+  position: absolute;
+  background: purple;
+  display: inline-block;
+}
+
+.devOverlayImportant {
+  background: red;
+}

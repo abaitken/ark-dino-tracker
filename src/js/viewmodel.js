@@ -29,6 +29,50 @@ ko.bindingHandlers.levelIndicator = {
     }
 };
 
+ko.bindingHandlers.devOverlay = {
+    init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+    },
+    update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+        let value = ko.unwrap(valueAccessor());
+        ko.unwrap(vm.resizedNotifier());
+        let parent = bindingContext['$parent'];
+        let mapImage = $('#mapImage');
+        let rect = mapImage.position();
+        let topOffset = rect.top;
+        let leftOffset = rect.left;
+        let width = mapImage.width();
+        let height = mapImage.height();
+        const lineThickness = 2;
+        
+        if(value.i === 5)
+            $(element).addClass('devOverlayImportant');
+        if(value.o) {
+            let lineTop = parent.ConvertLatToX(value.i * 10);
+            let lineLeft = parent.ConvertLonToY(0);
+            let lineRight = parent.ConvertLonToY(100);
+            let lineWidth = width - (width - lineRight) - lineLeft;
+            $(element).css({
+                width: lineWidth,
+                height: lineThickness,
+                top: lineTop,
+                left: lineLeft
+            });
+        }
+        else {
+            let lineLeft = parent.ConvertLonToY(value.i * 10);
+            let lineTop = parent.ConvertLatToX(0);
+            let lineBottom = parent.ConvertLatToX(100);
+            let lineHeight = height - (height - lineBottom) - lineTop;
+            $(element).css({
+                width: lineThickness,
+                height: lineHeight,
+                top: lineTop,
+                left: lineLeft
+            });
+        }
+    }
+};
+
 let UpdateTooltipPosition = function (element) {
 
     let rect = element.getBoundingClientRect()
@@ -46,6 +90,7 @@ let UpdateTooltipPosition = function (element) {
         $(".coordinateTooltip").text('Lat: ' + Math.round(vm.ConvertYToLat(top)) + ', Lon: ' + Math.round(vm.ConvertXToLon(left)));
     };
 };
+
 ko.bindingHandlers.coordtooltip = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
         $(element).on("mousemove", UpdateTooltipPosition(element));
@@ -357,13 +402,36 @@ function ViewModel() {
             });
     };
 
+    self.devMode = ko.computed(function() {
+        return location.search != null && location.search.includes('dev=');
+    });
+
+    self.devOverlayLines = ko.computed(function() {
+        let result = [];
+        if(self.devMode())
+        {        
+            for(let i = 0; i <= 10; i ++) {
+                
+                result.push({
+                    i: i,
+                    o: true
+                });
+                result.push({
+                    i: i,
+                    o: false
+                });
+            }
+        }
+        return result;
+    });
+    
     self.resizedNotifier = ko.observable();
     self.Init = function () {
         DataTools.FetchData(DataTools.GenerateDatasetUrl('maps'))
             .then((data) => {
                 let selectedMaps = [];
 
-                let devMode = location.search != null && location.search.includes('dev=');
+                let devMode = self.devMode();
                 for (let index = 0; index < data.length; index++) {
                     const element = data[index];
                     if (!element.Hidden || devMode)

@@ -53,6 +53,9 @@
             <div class="location" data-bind="position: $data, levelIndicator: Level"></div>
             <!-- /ko -->
             <span class="coordinateTooltip"></span>
+            <!-- ko foreach: devOverlayLines -->
+            <div class="devOverlay" data-bind="devOverlay: $data"></div>
+            <!-- /ko -->
           </div>
         </div>
         <div class="col col-xl-3">
