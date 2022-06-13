@@ -1,5 +1,10 @@
 # ARK Dino Tracker Changelog
 
+## [2.2.1]
+
+### Fixed
+- Mapping for Rock Draw Nests
+
 ## [2.2.0]
 
 ### Added
