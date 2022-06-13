@@ -199,5 +199,7 @@
     "Basilisk_Character_BP_C": "Basilisk",
     "MegaBasilisk_Character_BP_C": "Alpha Basilisk",
     "ChupaCabra_Character_BP_Surface_C": "Nameless (Surface)",
-    "Pteroteuthis_Char_BP_Surface_C": "Seeker (Surface)"
+    "Pteroteuthis_Char_BP_Surface_C": "Seeker (Surface)",
+    "RockDrawNest_C": "Rock Drake Nest",
+    "Zipline_Anchor_C": "Zipline Anchor"
 }

@@ -1,5 +1,10 @@
 # ARK Dino Tracker Changelog
 
+## [2.2.0]
+
+### Added
+- Mapping for Rock Draw Nests and Zipline Anchors
+
 ## [2.1.0]
 
 ### Changed
