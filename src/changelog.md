@@ -1,4 +1,8 @@
 # ARK Dino Tracker Changelog
+## [2.3.0]
+
+### Fixed
+- Improved last updated date to display correct local time
 
 ## [2.2.2]
 
