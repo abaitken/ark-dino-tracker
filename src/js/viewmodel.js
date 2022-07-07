@@ -127,6 +127,20 @@ let DataTools = new function () {
         return 'api/index.php?id=' + id + '&set=' + datasetId;
     };
 
+    self.GenerateDatasetMetaUrl = function (id) {
+        if (location.href.startsWith('file'))
+            return 'data/' + id + '-meta.json';
+
+        return 'api/index.php?id=' + id + '&format=meta';
+    };
+
+    self.GenerateChunkedDatasetMetaUrl = function (datasetId) {
+        if (location.href.startsWith('file'))
+            return 'data/' + datasetId + '/meta.json';
+
+        return 'api/index.php?id=classes&set=' + datasetId + '&format=meta';
+    };
+
     self.FetchData = function (url) {
         return new Promise((resolve, reject) => {
             $.ajax({
@@ -335,6 +349,31 @@ function ViewModel() {
                 });
         });
     };
+
+    self.fetchDataMeta = function(dataset) {
+        let urlSelector = function (dataset) {
+            let mode = DataTools.GetDatasetMode(dataset);
+
+            switch (mode) {
+                case DATA_MODES.MONOLITH:
+                    return DataTools.GenerateDatasetMetaUrl(dataset.id);
+                case DATA_MODES.CHUNKED:
+                    return DataTools.GenerateChunkedDatasetMetaUrl(dataset.id);
+                default:
+                    throw "Unexpected dataset mode '" + mode + "'";
+            }
+        };
+        return new Promise((resolve, reject) => {
+
+            let url = urlSelector(dataset);
+            DataTools.FetchData(url)
+                .then((data) => {
+                    resolve(data);
+                });
+        });
+    };
+
+
     self.handleErrors = function (errors) {
         let error = '';
 
@@ -344,6 +383,7 @@ function ViewModel() {
         }
 
         self.messages(error);
+        console.error(errors);
         $('#messages').attr("class", "alert alert-danger");
     };
 
@@ -365,11 +405,12 @@ function ViewModel() {
     };
 
     self.LoadDataset = function (dataset) {
-        Promise.all([self.fetchSetData(dataset), self.fetchMappings()])
+        Promise.all([self.fetchSetData(dataset), self.fetchMappings(), self.fetchDataMeta(dataset)])
             .then((values) => {
                 let data = values[0];
                 let mappings = values[1];
-                self.lastUpdated(data['LastUpdated']);
+                let meta = values[2];
+                self.lastUpdated(new Date(meta['LastUpdated']).toLocaleString());
 
                 let currentClass = self.selectedCreatureClass();
                 let selectedClass = null;
