@@ -1,4 +1,11 @@
 # ARK Dino Tracker Changelog
+
+## [2.3.1]
+
+### Changed
+- Updated class names with official names
+
+
 ## [2.3.0]
 
 ### Fixed
