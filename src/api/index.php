@@ -41,8 +41,10 @@ switch ($format) {
     case 'full':
         echo file_get_contents($filename);
         break;
-    case 'timestamp':
-        echo '{"timestamp": ' . filemtime($filename) . '}';
+    case 'meta':
+        $result = new ArrayObject();
+        $result['LastUpdated'] = date(DATE_ATOM, filemtime($filename));
+        echo json_encode($result);
         break;
     default:
         echo "{}";
