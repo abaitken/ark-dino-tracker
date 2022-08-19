@@ -156,6 +156,8 @@
     "Eel_Character_BP_C": "Electrophorus",
     "EelBoss_Character_BP": "Moeder",
     "EelMinion_Character_BP": "Eel Minion",
+    "ElementWall_Horde_3_C": "Element Node Wall (Other)",
+    "ElementWall_Horde_C": "Element Node Wall",
     "EndBoss_Character_C": "Overseer",
     "EndBoss_Character_Easy_C": "Overseer Gamma",
     "EndBoss_Character_Hard_C": "Overseer Alpha",
