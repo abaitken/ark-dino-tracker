@@ -49,7 +49,7 @@
 	},
 	{
 		"Id": "ragnarok",
-        "Hidden": true,
+        "Hidden": false,
 		"Text": "Ragnarok",
 		"Image": "img/ragnarok.jpeg",
 		"ImageOriginalWidth": 1024,
