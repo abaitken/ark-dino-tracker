@@ -1,10 +1,40 @@
 # ARK Dino Tracker Changelog
 
-## [2.3.1]
+## [2.5.2]
 
-### Changed
+### Fixed
+
 - Updated class names with official names
 
+## [2.5.1]
+
+### Changed
+
+- Updated Fjordur map image
+
+## [2.5.0]
+
+### Changed
+
+- Enabled Fjordur
+
+## [2.4.0]
+
+### Changed
+
+- Enabled Genesis 1
+
+## [2.5.0]
+
+### Changed
+
+- Enabled Ragnarok
+
+## [2.3.1]
+
+### Fixed
+
+- Updated class names with official names
 
 ## [2.3.0]
 
@@ -19,12 +49,12 @@
 ## [2.2.1]
 
 ### Fixed
-- Mapping for Rock Draw Nests
+- Mapping for Rock Drake Nests
 
 ## [2.2.0]
 
 ### Added
-- Mapping for Rock Draw Nests and Zipline Anchors
+- Mapping for Rock Drake Nests and Zipline Anchors
 
 ## [2.1.0]
 
