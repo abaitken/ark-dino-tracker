@@ -17,23 +17,69 @@
       <img src="img/Tex_skill_58.PNG" width="32" height="32" />&nbsp;
       <a class="navbar-brand" href="#">ARK Dino Tracker</a>
       <!-- ko if: dataReady -->
-      <div>
-        <select
-          data-bind="options: maps, optionsText: 'Text', value: selectedMap"></select>
-        <select
-          data-bind="options: datasets, optionsText: 'Text', value: selectedDataset"></select>
-        <select
-          data-bind="options: creatureClasses, optionsText: 'Text', value: selectedCreatureClass, optionsCaption: 'Select creature class...'"></select>
-        <span class="navbar-text">
-          Show tooltips: <input type="checkbox" data-bind="checked: showTooltips" />
-          <button class="btn btn-dark" onclick="vm.RefreshData()">
-               <img src="img/refresh.png" /> Refresh
-          </button>
-        </span>
+      <div class="container navbar-text">
+        <div class="row">
+
+          <!-- ARK -->
+          <div class="col">
+            <div class="row">
+              <div class="col">ARK</div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <select data-bind="options: maps, optionsText: 'Text', value: selectedMap"></select>
+              </div>
+            </div>
+          </div>
+          <!-- REALM -->
+          <div class="col">
+            <div class="row">
+              <div class="col">REALM</div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <select data-bind="options: realms, optionsText: 'Text', value: selectedRealm"></select>
+              </div>
+            </div>
+          </div>
+          <!-- TRACK TYPE -->
+          <div class="col">
+            <div class="row">
+              <div class="col">TYPE</div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <select data-bind="options: datasets, optionsText: 'Text', value: selectedDataset"></select>
+              </div>
+            </div>
+          </div>
+          <!-- TRACK SPECIFIC -->
+          <div class="col">
+            <div class="row">
+              <div class="col">CLASS</div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <select
+                  data-bind="options: creatureClasses, optionsText: 'Text', value: selectedCreatureClass, optionsCaption: 'Select creature class...'"></select>
+              </div>
+            </div>
+          </div>
+          <!-- CONTROLS -->
+          <div class="col">
+            Show tooltips:&nbsp;<input type="checkbox" data-bind="checked: showTooltips" />
+          </div>
+          <!-- ACTIONS-->
+          <div class="col">
+            <button class="btn btn-dark" onclick="vm.RefreshData()">
+              <img src="img/refresh.png" /> Refresh
+            </button>
+          </div>
+        </div>
       </div>
       <!-- /ko -->
       <div class="navbar-text collapse navbar-collapse justify-content-end">
-          <a href="changelog.html">v2.5.2</a>
+        <a href="changelog.html">v2.5.2</a>
       </div>
     </nav>
   </header>
@@ -51,7 +97,8 @@
       <div class="row no-gutters">
         <div class="col col-xl-8">
           <div class="map">
-            <img data-bind="attr: { src: selectedMap().Image }" class="mapImage" id="mapImage" data-bind="coordtooltip: true"/>
+            <img data-bind="attr: { src: imageData().URI }" class="mapImage" id="mapImage"
+              data-bind="coordtooltip: true" />
             <!-- ko foreach: locations -->
             <div class="location" data-bind="position: $data, levelIndicator: Level"></div>
             <!-- /ko -->
@@ -65,7 +112,10 @@
           <span class="text-muted">
             <div>Last updated: <span data-bind="text: lastUpdated"></span></div>
           </span>
-          <div><h3><span data-bind="text: selectedCreatureClassName"></span> (x<span data-bind="text: creatureNumber"></span>)</h3></div>
+          <div>
+            <h3><span data-bind="text: selectedCreatureClassName"></span> (x<span
+                data-bind="text: creatureNumber"></span>)</h3>
+          </div>
           <h4>Top 25:</h4>
           <table class="table table-sm">
             <thead>

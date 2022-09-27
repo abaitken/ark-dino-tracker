@@ -227,6 +227,51 @@ function ViewModel() {
     self.colorLegend = levelColors;
     self.maps = [];
     self.selectedMap = ko.observable(null);
+    self.realms = ko.pureComputed(function () {
+        let value = self.selectedMap();
+        if (value == null)
+            return [];
+        if (value['Realms'] === undefined)
+            return [{
+                Text: 'Default',
+                URI: value.URI,
+                ImageOriginalHeight: value.ImageOriginalHeight,
+                ImageOriginalWidth: value.ImageOriginalWidth,
+                ScaleFactor: value.ScaleFactor,
+                ImageOffsetLeft: value.ImageOffsetLeft,
+                ImageOffsetTop: value.ImageOffsetTop
+            }]
+        return value.Realms;
+    });
+    self.selectedRealm = ko.observable(null);
+    self.imageData = ko.pureComputed(function () {
+        let value = self.selectedRealm();
+        if (value == null)
+            return {
+                URI: 'img/nomap.jpeg',
+                ImageOriginalHeight: 2048,
+                ImageOriginalWidth: 2048,
+                ScaleFactor: 20,
+                ImageOffsetLeft: 42,
+                ImageOffsetTop: 30
+            };
+        if(value['URI'] === undefined)
+            return {
+                URI: 'img/nomap.jpeg',
+                ImageOriginalHeight: 2048,
+                ImageOriginalWidth: 2048,
+                ScaleFactor: 20,
+                ImageOffsetLeft: 42,
+                ImageOffsetTop: 30
+            };
+        return value;
+    });
+    self.datasets = ko.pureComputed(function () {
+        let value = self.selectedMap();
+        if (value == null)
+            return [];
+        return value.Datasets;
+    });
     self.datasets = ko.pureComputed(function () {
         let value = self.selectedMap();
         if (value == null)
@@ -267,39 +312,39 @@ function ViewModel() {
         return result;
     });
     self.ConvertLatToX = function (lat) {
-        let map = self.selectedMap();
-        let originalHeight = map.ImageOriginalHeight;
+        let imageData = self.imageData();
+        let originalHeight = imageData.ImageOriginalHeight;
         let currentHeight = $("#mapImage").height();
         let scale = currentHeight / originalHeight;
-        let factor = map.ScaleFactor;
-        let imageTopOffset = map.ImageOffsetTop;
+        let factor = imageData.ScaleFactor;
+        let imageTopOffset = imageData.ImageOffsetTop;
         return (imageTopOffset + (factor * lat) - (markerSize / 2)) * scale;
     };
     self.ConvertXToLon = function (x) {
-        let map = self.selectedMap();
-        let originalHeight = map.ImageOriginalHeight;
+        let imageData = self.imageData();
+        let originalHeight = imageData.ImageOriginalHeight;
         let currentHeight = $("#mapImage").height();
         let scale = currentHeight / originalHeight;
-        let factor = map.ScaleFactor;
-        let imageTopOffset = map.ImageOffsetTop;
+        let factor = imageData.ScaleFactor;
+        let imageTopOffset = imageData.ImageOffsetTop;
         return ((x / scale) - imageTopOffset) / factor;
     };
     self.ConvertLonToY = function (lon) {
-        let map = self.selectedMap();
-        let originalWidth = map.ImageOriginalWidth;
+        let imageData = self.imageData();
+        let originalWidth = imageData.ImageOriginalWidth;
         let currentWidth = $("#mapImage").width();
         let scale = currentWidth / originalWidth;
-        let factor = map.ScaleFactor;
-        let imageLeftOffset = map.ImageOffsetLeft;
+        let factor = imageData.ScaleFactor;
+        let imageLeftOffset = imageData.ImageOffsetLeft;
         return (imageLeftOffset + (factor * lon) - (markerSize / 2)) * scale;
     };
     self.ConvertYToLat = function (y) {
-        let map = self.selectedMap();
-        let originalWidth = map.ImageOriginalWidth;
+        let imageData = self.imageData();
+        let originalWidth = imageData.ImageOriginalWidth;
         let currentWidth = $("#mapImage").width();
         let scale = currentWidth / originalWidth;
-        let factor = map.ScaleFactor;
-        let imageLeftOffset = map.ImageOffsetLeft;
+        let factor = imageData.ScaleFactor;
+        let imageLeftOffset = imageData.ImageOffsetLeft;
         return ((y / scale) - imageLeftOffset) / factor;
     };
 
