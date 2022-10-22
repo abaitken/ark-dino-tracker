@@ -1,5 +1,11 @@
 # ARK Dino Tracker Changelog
 
+## [2.6.0]
+
+### Fixed
+
+- Fix for navbar controls causing overlap on last updated time
+
 ## [2.5.2]
 
 ### Fixed

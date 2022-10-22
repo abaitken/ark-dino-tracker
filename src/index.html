@@ -17,69 +17,44 @@
       <img src="img/Tex_skill_58.PNG" width="32" height="32" />&nbsp;
       <a class="navbar-brand" href="#">ARK Dino Tracker</a>
       <!-- ko if: dataReady -->
-      <div class="container navbar-text">
-        <div class="row">
-
-          <!-- ARK -->
-          <div class="col">
-            <div class="row">
-              <div class="col">ARK</div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <select data-bind="options: maps, optionsText: 'Text', value: selectedMap"></select>
-              </div>
-            </div>
+      <div class="container-fluid navbar-text d-flex">
+          <!-- ARK --> 
+          <div>
+			ARK <br/>
+			<select data-bind="options: maps, optionsText: 'Text', value: selectedMap"></select>
           </div>
           <!-- REALM -->
-          <div class="col">
-            <div class="row">
-              <div class="col">REALM</div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <select data-bind="options: realms, optionsText: 'Text', value: selectedRealm"></select>
-              </div>
-            </div>
+          <div>
+			REALM </br>
+			<select data-bind="options: realms, optionsText: 'Text', value: selectedRealm"></select>
           </div>
           <!-- TRACK TYPE -->
-          <div class="col">
-            <div class="row">
-              <div class="col">TYPE</div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <select data-bind="options: datasets, optionsText: 'Text', value: selectedDataset"></select>
-              </div>
-            </div>
+          <div>
+			TYPE <br/>
+			<select data-bind="options: datasets, optionsText: 'Text', value: selectedDataset"></select>
           </div>
           <!-- TRACK SPECIFIC -->
-          <div class="col">
-            <div class="row">
-              <div class="col">CLASS</div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <select
-                  data-bind="options: creatureClasses, optionsText: 'Text', value: selectedCreatureClass, optionsCaption: 'Select creature class...'"></select>
-              </div>
-            </div>
+          <div>
+			CLASS <br/>
+			<select data-bind="options: creatureClasses, optionsText: 'Text', value: selectedCreatureClass, optionsCaption: 'Select creature class...'"></select>
           </div>
           <!-- CONTROLS -->
-          <div class="col">
+          <div>
             Show tooltips:&nbsp;<input type="checkbox" data-bind="checked: showTooltips" />
           </div>
           <!-- ACTIONS-->
-          <div class="col">
+          <div>
             <button class="btn btn-dark" onclick="vm.RefreshData()">
               <img src="img/refresh.png" /> Refresh
             </button>
           </div>
-        </div>
       </div>
+	  <div class="container-fluid d-flex">
+	  &nbsp;
+	  </div>
       <!-- /ko -->
       <div class="navbar-text collapse navbar-collapse justify-content-end">
-        <a href="changelog.html">v2.5.2</a>
+        <a href="changelog.html">v2.6.0</a>
       </div>
     </nav>
   </header>
