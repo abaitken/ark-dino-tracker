@@ -6,6 +6,10 @@
 
 - Fix for navbar controls causing overlap on last updated time
 
+### Changed
+
+- Moved last updated on the navbar
+
 ## [2.5.2]
 
 ### Fixed

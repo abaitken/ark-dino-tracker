@@ -49,8 +49,12 @@
             </button>
           </div>
       </div>
-	  <div class="container-fluid d-flex">
-	  &nbsp;
+	  <div class="container-fluid navbar-text d-flex">
+		  <!-- LAST UPDATED -->
+		  <div class="text-light fw-bold">
+			LAST UPDATED<br/>
+			<span data-bind="text: lastUpdated"></span>			  
+		  </div>
 	  </div>
       <!-- /ko -->
       <div class="navbar-text collapse navbar-collapse justify-content-end">
@@ -83,10 +87,7 @@
             <!-- /ko -->
           </div>
         </div>
-        <div class="col col-xl-3">
-          <span class="text-muted">
-            <div>Last updated: <span data-bind="text: lastUpdated"></span></div>
-          </span>
+        <div class="col col-xl-3">          
           <div>
             <h3><span data-bind="text: selectedCreatureClassName"></span> (x<span
                 data-bind="text: creatureNumber"></span>)</h3>
