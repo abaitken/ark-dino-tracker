@@ -97,7 +97,7 @@
 	},
 	{
 		"Id": "center",
-        "Hidden": true,
+        "Hidden": false,
 		"Text": "The Center",
 		"URI": "img/the_center.jpeg",
 		"ImageOriginalWidth": 1024,
